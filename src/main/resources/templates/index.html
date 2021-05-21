@@ -6,21 +6,28 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/module.css">
+    <link rel="stylesheet" href="/css/state.css">
 </head>
 <body>
+<main>
 <header th:replace="./fragments/header :: header"></header>
     <h1>Welcome to Lethani!</h1>
-    <p>Try the game out </p>
+    <p>Try the game out!</p>
     <h2>Login</h2>
-    <form action="" method="">
-        <label>Username</label>
-        <input  type="" name="">
+    <form action="/login" method="POST">
+        <label for="username">Username</label>
+        <input id="username"  type="username" name="Username">
 
-        <label>Password</label>
-        <input  type="" name="">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="Password">
 
         <input type="submit" value="login">
     </form>
+</main>
 <footer th:replace="./fragments/footer :: footer"></footer>
 </body>
 </html>
