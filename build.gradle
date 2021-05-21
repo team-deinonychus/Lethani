@@ -23,6 +23,10 @@ dependencies {
 //	compile('org.springframework.boot:spring-boot-starter-websocket')
 //	compile ('org.springframework.security:spring-security-messaging')
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'org.postgresql:postgresql'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
