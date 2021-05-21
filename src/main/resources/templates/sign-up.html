@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<header th:replace="./fragments/header :: header"></header>
+
+<h1>Signup</h1>
+<form action="/newFamily" method="POST">
+
+    <label for="familyUsername">Username</label>
+    <input id="familyUsername" type="text" name="familyUsername">
+
+    <label for="familyPassword">Password</label>
+    <input id="familyPassword" type="password" name="familyPassword">
+
+    <label for="familyName">Family Name</label>
+    <input id="familyName" type="text" name="familyName">
+
+    <input type="submit" value="Create New Family">
+</form>
+
+<footer th:replace="./fragments/footer :: footer"></footer>
+</body>
+</html>
