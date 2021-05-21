@@ -1,3 +1,3 @@
-# toName
+# Lethani
 
 Authors: James, Amelia, Garhett
