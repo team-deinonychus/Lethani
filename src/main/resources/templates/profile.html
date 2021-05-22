@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -13,6 +13,37 @@
     <link rel="stylesheet" href="/css/state.css">
 </head>
 <body>
+<header th:replace="./fragments/header :: header"></header>
+<main>
+    <div>
+        <h1>Profile</h1>
+        <img src="" alt="your class/character picture">
+    </div>
 
+    <div>
+        <h2>Player Name:</h2>
+        <img src="" alt="profile picture">
+    </div>
+
+    <div>
+        <ul>
+            <li>Status</li>
+            <li>Player XP:</li>
+            <li>Mobs killed:</li>
+        </ul>
+    </div>
+
+    <h2>Class Information</h2>
+    <p>Class:</p>
+
+    <h2>Your Class</h2>
+    <p>Reset and change your class</p>
+    <img src="" alt="your class/character picture">
+    <img src="" alt="your class/character picture">
+    <img src="" alt="your class/character picture">
+
+
+</main>
+<footer th:replace="./fragments/footer :: footer"></footer>
 </body>
 </html>
