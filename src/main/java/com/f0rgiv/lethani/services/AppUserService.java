@@ -34,11 +34,14 @@ public class AppUserService {
         if (image == null || image.getContentType().equals("application/octet-stream")) return;
 
         String ext = contentTypesExtensions.get(image.getContentType());
+        System.out.println("=============DEBUG============");
+        System.out.println("ext is: " + ext);
+        System.out.println("=============DEBUG============");
         if (ext == null) throw new InvalidContentTypeException("File type must be a jpg or png");
 
         String path = profileImageRoot + userPrincipal.getId() + ext;
         System.out.println("=============DEBUG============");
-        System.out.println(path);
+        System.out.println("uploading to: " + path);
         System.out.println("=============DEBUG============");
         InputStream stream = new BufferedInputStream(image.getInputStream());
 
@@ -49,19 +52,18 @@ public class AppUserService {
         }
 
         userPrincipal.setImageExtension(ext);
-
         appUserRepository.save(userPrincipal);
     }
 
     public String getProfilePicturePath(AppUser userPrincipal) {
         System.out.println("=============DEBUG============");
-        System.out.println(profileImageRoot + userPrincipal.getId() + userPrincipal.getImageExtension());
+        System.out.println("getting from path: " + profileImageRoot + userPrincipal.getId() + userPrincipal.getImageExtension());
         System.out.println("=============DEBUG============");
-        return defaultProfilePicturePath.equals(userPrincipal.getImageExtension()) ?
+        return userPrincipal.getImageExtension() == null ?
+                defaultProfilePicturePath :
                 fileUploadService.getURL(
                 profileImageRoot + userPrincipal.getId() +
                         userPrincipal.getImageExtension()
-                ) :
-                defaultProfilePicturePath;
+                );
     }
 }

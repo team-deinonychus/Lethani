@@ -9,19 +9,20 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 
-//@Service
+@Service
 public class FileUploadService {
+
     @Autowired
-    private AmazonS3 amazonS3;
+    AmazonS3 amazonS3;
 
     @Value("${aws.bucketName}") private String bucketName;
-
-
-    public void upload(String path,
-                       InputStream stream
-    ) {
-        upload(path, stream, null, 0);
-    }
+//
+//
+//    public void upload(String path,
+//                       InputStream stream
+//    ) {
+//        upload(path, stream, null, 0);
+//    }
 
     public void upload(String path, InputStream stream, String contentType, long size) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -29,8 +30,15 @@ public class FileUploadService {
         if (size != 0) objectMetadata.setContentLength(size);
 
         try {
+            System.out.println("=============DEBUG============");
+            System.out.println(amazonS3.getRegion());
+            System.out.println(amazonS3.getS3AccountOwner());
+            System.out.println("=============DEBUG============");
             amazonS3.putObject(bucketName, path, stream, objectMetadata);
         } catch (AmazonServiceException e) {
+            System.out.println("=============DEBUG============");
+            System.out.println(e);
+            System.out.println("=============DEBUG============");
             throw new IllegalStateException("Failed to upload the file");
         }
     }
