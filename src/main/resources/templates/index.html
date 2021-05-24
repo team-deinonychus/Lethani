@@ -4,8 +4,10 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-    <h1>Welcome to Lethani!</h1>
-    <p>Try the game out!</p>
+    <div class="welcome-div">
+        <h1>Welcome to Lethani!</h1>
+        <p>Try the game out!</p>
+    </div>
     <h2>Login</h2>
     <form action="/login" method="POST">
         <label for="username">Username</label>
