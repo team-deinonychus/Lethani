@@ -16,6 +16,7 @@ public class AppUser implements UserDetails {
     String username;
     String password;
     String displayName;
+    String imageExtension;
 
     //===============Constructors========================
 
@@ -63,5 +64,21 @@ public class AppUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    //=====================Getters====================
+
+    public long getId() {
+        return id;
+    }
+
+    public String getImageExtension() {
+        return imageExtension;
+    }
+
+    //=====================Setters====================
+
+    public void setImageExtension(String imageExtension) {
+        this.imageExtension = imageExtension;
     }
 }
