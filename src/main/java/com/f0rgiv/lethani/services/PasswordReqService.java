@@ -17,7 +17,7 @@ public class PasswordReqService {
         boolean hasLowercase = password.matches(".*[a-z]*.");
         boolean hasUppercase = password.matches(".*[A-Z]*.");
 
-        if (!hasNumber || !hasLowercase || hasUppercase) return "password_invalid";
+        if (!hasNumber || !hasLowercase || !hasUppercase) return "password_invalid";
         else return null;
     }
 }
