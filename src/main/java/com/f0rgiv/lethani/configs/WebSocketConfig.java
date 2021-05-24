@@ -7,20 +7,19 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-//@Configuration
-//@EnableWebSocketMessageBroker
-
+@Configuration
+@EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/gameMessage");
-        config.setApplicationDestinationPrefixes("/");
+        config.enableSimpleBroker("/game");
+        config.setApplicationDestinationPrefixes("/app");
     }
   
 
-//    @Override
-//    public void registerStompEndPoints(StompEndpointRegistry registry) {
-//        registry.addEndpoint("/messaging").withSockJS();
-//    }
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/lethani").withSockJS();
+    }
 }
