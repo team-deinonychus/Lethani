@@ -13,8 +13,41 @@
     background-color: rgb(12, 111, 24);
 }
 
-/* Nav Bar*/
+/* Sign Up and Login Page*/
+.text-center {
+     margin-top: 5rem;
+}
 
+.rounded-3 {
+    border-radius: .1rem!important;
+    border-style: double;
+    border-width: medium;
+}
+.bg-light {
+    background-color: rgb(12, 111, 24)!important;
+}
+.p-5 {
+    padding: 3rem!important;
+}
+.border {
+    border: 15px double #122415!important;
+}
+
+/* Button on login page */
+.btn-primary {
+    color: #fff;
+    background-color: gray;
+    border-color: gray;
+}
+
+/* Button on signup page */
+.btn-secondary {
+    color: #fff;
+    background-color: gray;
+    border-color: gray;
+}
+
+/* Nav Bar in fragment > header */
 /* Nav Bar font*/
 .text-small {
     font-size: 0.9rem !important;
