@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/head :: head('Login')">
+
+</head>
+<body >
+<header th:replace="fragments/header :: header"></header>
+    <main class="text-center py-5">
+        <h1 class="h3 mb-3 fw-normal">Log In</h1>
+        <div class="col-10 mx-auto col-lg-5">
+            <form class="p-5 border rounded-3 bg-light" action="/login" method="post">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="input-username" type="text" name="username" required>
+                    <label class="floatingInput" for="input-username">username</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="input-password" type="password" name="password" required>
+                    <label class="floatingInput" for="input-password">password</label>
+                </div>
+                <input class="w-100 btn btn-lg btn-primary" type="submit" value="login">
+                    <div >Don't have an account yet? <a class="col-lg-3" href="/signup">sign up</a></div>
+            </form>
+        </div>
+    </main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

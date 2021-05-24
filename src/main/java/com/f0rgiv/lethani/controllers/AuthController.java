@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Controller
 public class AuthController {
 
     @Autowired
@@ -38,12 +40,14 @@ public class AuthController {
 
     @GetMapping("/signup")
     public String showSignup(String error, Model model) {
+        System.out.println("about to sign Up");
         if (error != null) {
             if (error.equals("username_exists"))
                 model.addAttribute("errorMessage", "The username has already been taken.");
             else if (passwordReqService.errorText.containsKey(error))
                 model.addAttribute("errorMessage", passwordReqService.errorText.get(error));
         }
+        System.out.println("about to return");
         return "signup";
     }
 
