@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
+
 @Controller
 public class MainController {
 
@@ -13,12 +15,13 @@ public class MainController {
     AppUserRepository appUserRepository;
 
     @GetMapping("/")
-    public String getIndex(Model m) {
-        return "index";
-    }
+    public String getIndex(Model m) { return "index"; }
 
     @GetMapping("/about")
     public String getAbout() {
         return "about-us";
     }
+
+    @GetMapping("/play")
+    public String getPlay() { return "play"; }
 }
