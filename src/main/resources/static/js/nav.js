@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 $(function () {
   $(window).on('scroll', function () {
