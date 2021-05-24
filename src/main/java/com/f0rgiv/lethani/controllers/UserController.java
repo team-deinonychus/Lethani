@@ -2,6 +2,8 @@ package com.f0rgiv.lethani.controllers;
 
 import com.f0rgiv.lethani.models.AppUser;
 import com.f0rgiv.lethani.repositories.AppUserRepository;
+import com.f0rgiv.lethani.services.AppUserService;
+import org.apache.tomcat.util.http.fileupload.impl.InvalidContentTypeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,8 @@ public class UserController {
     @Autowired
     AppUserRepository appUserRepository;
 
+    @Autowired
+    AppUserService appUserService;
 
     /**
      * @return editable details for the principal.user
@@ -40,7 +44,7 @@ public class UserController {
      */
     @PutMapping("/profile")
     public RedirectView updateProfile(String displayName,
-                                      HttpServletRequest request) throws IOException {
+                                      HttpServletRequest request) {
         AppUser userPrincipal = appUserRepository.findByUsername(request.getUserPrincipal().getName());
         appUserRepository.save(userPrincipal);
         return new RedirectView("profile");
@@ -54,9 +58,16 @@ public class UserController {
      * Allows a user to update their profile picture by uploading a new one.
      */
     @PutMapping("/profile/image")
-    public RedirectView updateProfileImage(@RequestParam("image") MultipartFile multipartFile,
-                                           HttpServletRequest request) throws IOException {
+    public RedirectView updateProfileImage( @RequestParam("image") MultipartFile multipartFile,
+                                            HttpServletRequest request) throws IOException {
         AppUser userPrincipal = appUserRepository.findByUsername(request.getUserPrincipal().getName());
+
+        try {
+            appUserService.updateProfilePicture(userPrincipal, multipartFile);
+        } catch (InvalidContentTypeException e) {
+            return new RedirectView("/profile?error=content_type");
+        }
+        appUserRepository.save(userPrincipal);
         return new RedirectView("/profile");
     }
 }
