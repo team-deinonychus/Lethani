@@ -20,7 +20,9 @@
 
     <div>
         <h2>profile name</h2>
-        <img src="" alt="profile picture">
+        <img alt="profile picture" loading="lazy"
+             th:if="${userPrincipal.hasProfilePicture}"
+             th:src="${@appUserService.getProfilePicturePath(userPrincipal)}">
         <form class="p-3" action="/profile/image?_method=PUT" method="post" enctype="multipart/form-data">
             <fieldset class="mb-3">
                 <label for="image-upload">Profile picture</label>
