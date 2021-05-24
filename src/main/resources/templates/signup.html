@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="">
+<head th:replace="fragments/head :: head('Sign Up')"></head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+<main class="text-center py-5">
+    <h1 class="h3 mb-3 fw-normal">Sign up</h1>
+    <div class="col-10 mx-auto col-lg-5">
+        <form class="p-5 border rounded-3 bg-light" action="/signup" method="post">
+            <div class="form-floating mb-3">
+                <input class="form-control" id="username" type="text" name="username" required>
+                <label class="floatingInput" for="username">username</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" id="password" type="password" name="password" required>
+                <label class="floatingInput" for="password">password</label>
+            </div>
+            <input class="w-100 btn btn-lg btn-secondary" type="submit" value="signup">
+            <div >Already have an account? <a href="/login">log in</a></div>
+        </form>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert">
+        <th:block th:text="${errorMessage}"></th:block>
+    </div>
+</main>
+<footer th:replace="./fragments/footer :: footer"></footer>
+</body>
+</html>
