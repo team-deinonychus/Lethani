@@ -19,6 +19,9 @@ public class AppUser implements UserDetails {
 
     //===============Constructors========================
 
+    public AppUser() {
+    }
+
     public AppUser(String username, String password, String displayName) {
         this.username = username;
         this.password = password;
