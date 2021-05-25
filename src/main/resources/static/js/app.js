@@ -92,6 +92,8 @@ function updateBoard(board){
     }
 }
 
+function 
+
 function moveUp(){
     handleMove(playerPosition, playerPosition.y = y+1);
 }
@@ -122,11 +124,13 @@ function handleMove(from, to) {
         default:
             break;
     }
-    //update the board
+    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({'board': boardState}));
 }
 
 function move(from, to) {
-
+    playerPosition = to;
+    boardState[from.y][from.x] = ".";
+    boardState[to.y][to.x] = "@";
 }
 
 function attack(to) {
