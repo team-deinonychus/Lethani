@@ -18,6 +18,10 @@ public class AppUser implements UserDetails {
     String displayName;
     String imageExtension;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "character_id", referencedColumnName = "id")
+    Character character;
+
     //===============Constructors========================
 
     public AppUser() {
