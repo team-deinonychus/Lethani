@@ -8,11 +8,6 @@
  align-self: flex-start;
 }
 
-.img-gargoyle{
-    height: 30px;
-    width: 30px;
-}
-
 .img-castle-town{
     height: 190px;
     width: max-content;
@@ -61,64 +56,14 @@
     border-color: gray;
 }
 
-/* Nav Bar in fragment > header */
-/* Nav Bar font*/
-.text-small {
-    font-size: 0.9rem !important;
-}
-
-div.nav-div {
+/* About Us Page */
+.team {
+    margin-top: 5rem;
     text-align: center;
 }
 
-.navbar {
-    transition: all 0.4s;
+.teamMemberPic {
+    height:250px;
+    width: 250px;
+    border-radius: 25%;
 }
-
-.navbar .nav-link {
-    color: #1b3520;
-}
-
-.navbar .nav-link:hover,
-.navbar .nav-link:focus {
-    color: #1b3520;
-    text-decoration: none;
-}
-
-.navbar .navbar-brand {
-    color: #364639;
-}
-
-
-/* Change navbar styling on scroll */
-.navbar.active {
-    background: #79b387;
-    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.navbar.active .nav-link {
-    color: #1b3520;
-}
-
-.navbar.active .nav-link:hover,
-.navbar.active .nav-link:focus {
-    color: #1b3520;
-    text-decoration: none;
-}
-
-.navbar.active .navbar-brand {
-    color: #1b3520;
-}
-
-
-/* Change navbar styling on small viewports */
-@media (max-width: 991.98px) {
-    .navbar {
-        background: #fff;
-    }
-
-    .navbar .navbar-brand, .navbar .nav-link {
-        color: #1b3520;
-    }
-}
-

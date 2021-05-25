@@ -2,35 +2,41 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head :: head('About Us')"></head>
 <body>
-
+<header class="lethani-header" th:replace="fragments/header :: header"></header>
     <main>
+        <div class="team">
+            <h1>About Us</h1>
         <div class="teamMember">
-            <div class="teamMemberPic">
-                <img src="https://via.placeholder.com/150" alt="">
+            <div>
+                <img class="teamMemberPic" src="/assets/amelia-waggoner.jpeg" alt="Amelia Waggoner">
+            </div>
+            <div class="teamMemberBio">
+                <p>I am a Software programmer with a B.A. Japanese language & culture, & minor in international business.
+                    <br />Always had a interest in software programming & technology.
+                    <br />I picked this skill because it will get me into a career where I can constantly grow & learn.
+                    <br />I want to combine my B.A. & software programming skills,
+                    <br />& work for a Japanese tech company or a company that is affiliated with Japan.
+                    <br />I have experience in customer service & time management.</p>
+            </div>
+        </div>
+        <div class="teamMember">
+            <div>
+                <img class="teamMemberPic" src="https://via.placeholder.com/150" alt="">
             </div>
             <div class="teamMemberBio">
                 <p>Temp</p>
             </div>
         </div>
         <div class="teamMember">
-            <div class="teamMemberPic">
-                <img src="https://via.placeholder.com/150" alt="">
+            <div>
+                <img class="teamMemberPic" src="https://via.placeholder.com/150" alt="">
             </div>
             <div class="teamMemberBio">
                 <p>Temp</p>
             </div>
         </div>
-        <div class="teamMember">
-            <div class="teamMemberPic">
-                <img src="https://via.placeholder.com/150" alt="">
-            </div>
-            <div class="teamMemberBio">
-                <p>Temp</p>
-            </div>
         </div>
     </main>
-    <footer>
-        <div class="footer" th:replace="fragments/footer :: div"></div>
-    </footer>
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>
