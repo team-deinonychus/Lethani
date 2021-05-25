@@ -2,40 +2,36 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head :: head('Play')"></head>
 <body>
-    <header>
-        <div class="header" th:="fragments/header :: div"></div>
-    </header>
+
+    <header th:replace="fragments/header :: header"></header>
+
     <main>
         <div class="gameDiv">
             <div>
-                <!--get this element by id then update the game state and this to make it "go down".            -->
                 <progress class="hpBar" value="100" max="100"></progress>
             </div>
             <div class="xpDiv">
                 <p>Temp XP Holder</p>
             </div>
             <div class="gameBoard">
-<!--                Game Board goes here     -->
             </div>
-            <div>
+            <!-- <div>
                 <button class="inventoryButton"></button>
-<!--                Other buttons and items go here. not sure what the circles on the wireframe are for -GM -->
-            </div>
+            </div> -->
         </div>
         <div class="messageDiv">
-            <div class="messageTextBox">
-<!-- Message Box html goes here    -->
-            </div>
+            <div id="messageTable"></div>
             <div class="messageInput">
-                <form action="POST" class="messageFormField">
-                    <input type="text">
-                    <submit></submit>
+                <form class="messageFormField" name="messageForm">
+                    <input type="text" id="messageField" placeholder="Send a message!">
+                    <input id="messageSubmit" type="submit">
                 </form>
             </div>
         </div>
     </main>
-    <footer>
-        <div class="footer" th:replace="fragments/footer :: div"></div>
-    </footer>
+
+    <footer th:replace="fragments/footer :: footer"></footer>
+
 </body>
+<script src="/js/app.js"></script>
 </html>

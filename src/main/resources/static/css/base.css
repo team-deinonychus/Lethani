@@ -19,12 +19,17 @@ body {
     color: rgb(14, 30, 14);
 }
 
+.userNameText {
+    color: red;
+    font-family: Papyrus;
+}
+
 .home-container {
     /* justify-content: center; */
     /* margin-bottom: -25px; */
 }
 
-
 footer {
     /* height:5px; */
 }
+
