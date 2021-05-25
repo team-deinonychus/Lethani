@@ -4,8 +4,22 @@
    font-size: 2rem;
 }
 
+.img-div{
+ align-self: flex-start;
+}
+
+.img-gargoyle{
+    height: 30px;
+    width: 30px;
+}
+
+.img-castle-town{
+    height: 190px;
+    width: max-content;
+}
+
 .login-div{
-    margin-top: 7rem;
+    margin-top: 2rem;
     font-size: 1.5rem;
     border-style: double;
     border-color: #122415;
@@ -107,22 +121,4 @@ div.nav-div {
         color: #1b3520;
     }
 }
-
-/* Footer */
-
-
-.fragment-footer {
-    flex-wrap: wrap;
-    /* content: initial; */
-     margin-top:5rem;
-     margin-bottom: 5rem;
-     text-align: center;
-     justify-content: center;
-     font-size: 1.5rem;
-     border-radius: 10px;
-     bottom:0;
-     width:100%;
-     height:5px;
-     padding: 0;
-     }
 

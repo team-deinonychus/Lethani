@@ -29,7 +29,19 @@ body {
     /* margin-bottom: -25px; */
 }
 
-footer {
-    /* height:5px; */
-}
+/* Footer */
+.fragment-footer {
+    flex-wrap: wrap;
+    /* content: initial; */
+     margin-top:5rem;
+     margin-bottom: 5rem;
+     text-align: center;
+     justify-content: center;
+     font-size: 1.5rem;
+     border-radius: 10px;
+     bottom:0;
+     width:100%;
+     height:5px;
+     padding: 0;
+     }
 
