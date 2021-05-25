@@ -1,28 +1,20 @@
-/* Main Colors for the Lethani App 
-    background-color #79b387
-    font color #1b3520
-    font color #364639
-*/
 
 body {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    /* min-height: 110vh; */
     background-color: #79b387;
-    color: #1b3520;
+    color: #132617;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    text-align: center;
 }
 
-.h1-home {
-    font-size: 5rem;
-    color: rgb(14, 30, 14);
+.text-small {
+    font-size: 1rem !important;
 }
 
 .userNameText {
     color: red;
     font-family: Papyrus;
 }
+
 
 .home-container {
     /* justify-content: center; */
@@ -44,4 +36,5 @@ body {
      height:5px;
      padding: 0;
      }
+
 
