@@ -10,24 +10,26 @@ function setUp() {
     getCurrentBoard();
     setPlayerStats();
     createListeners();
+    keyPress();
 }
 
 //=====================setup=====================
 
 function createListeners() {
-    $("#gameMap").bind('keypress', function (e) {
-        var code = e.keyCode || e.which;
-        switch (code) {
-            case 38 || 87: //up
+    let testArea = document
+    testArea.addEventListener('keypress', (e) => {
+        console.log(e.key);
+        switch (e.key) {
+            case 'w': //up
                 trigger_beep();
                 moveUp();
-            case 40 || 83: //down
+            case 's': //down
                 trigger_beep();
                 moveDown();
-            case 37 || 65: //left
+            case 'a': //left
                 trigger_beep();
                 moveLeft();
-            case 39 || 68: //right
+            case 'd': //right
                 trigger_beep();
                 moveRight();
             default:
@@ -35,6 +37,7 @@ function createListeners() {
         }
     });
 }
+
 
 function configSockets() {
     var socket = new SockJS('/lethani');
@@ -198,3 +201,6 @@ function getCurrentBoard() {
         }
     })
 }
+
+
+
