@@ -2,24 +2,54 @@
 
 var stompClient = null;
 
-window.addEventListener("load", connectMessageSocket);
+window.addEventListener("load", setUp);
 window.addEventListener('beforeunload', disconnectMessageSocket)
 
-function connectMessageSocket() {
+function setUp() {
+    configSockets();
+    createListeners();
+    //TODO preload game state (low as any movement will cause sync for all players.)
+}
 
+//=====================setup=====================
+
+function createListeners() {
+    $("#gameMap").bind('keypress', function (e) {
+        var code = e.keyCode || e.which;
+        switch (code) {
+            case 38 || 87: //up
+                moveUp();
+            case 40 || 83: //down
+                moveDown();
+            case 37 || 65: //left
+                moveLeft();
+            case 39 || 68: //right
+                moveRight();
+            default:
+                break;
+        }
+    });
+}
+
+function configSockets() {
     var socket = new SockJS('/lethani');
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
 
         console.log("Connected to Message Socket: " + frame);
-        stompClient.subscribe('/game/messages', function(message) {
+        stompClient.subscribe('/game/messages', function (message) {
             receiveMessage(JSON.parse(message.body).content);
         });
 
-        // TODO Needs the second socket connection for data inserted here.
-    })
+        console.log("Connected to starting zone: " + frame);
+        stompClient.subscribe('/game/zone/1', function (location) {
+            receiveMessage(JSON.parse(location.body).content);
+        });
+    });
 }
+
+//=====================messaging=====================
 
 function disconnectMessageSocket() {
     if(stompClient !== null) {
@@ -49,3 +79,27 @@ $(function () {
         sendMessage();
     })
 });
+
+//=====================game=====================
+
+var gameState = ''
+
+function createBoard(){
+    
+}
+
+function moveUp(){
+
+}
+
+function moveDown(){
+
+}
+
+function moveLeft(){
+
+}
+
+function moveRight(){
+
+}
