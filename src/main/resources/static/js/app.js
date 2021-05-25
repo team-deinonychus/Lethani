@@ -83,10 +83,10 @@ $(function () {
 
 //=====================game=====================
 
-var gameState = ''
+var boardState;
 
 function createBoard(){
-    
+
 }
 
 function moveUp(){
@@ -103,4 +103,15 @@ function moveLeft(){
 
 function moveRight(){
 
+}
+
+function move(from, to) {
+    fromChar = 
+    if (isAttack()) {
+        
+    }
+}
+
+function move(from, to) {
+    
 }
