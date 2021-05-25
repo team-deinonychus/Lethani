@@ -135,7 +135,7 @@ function moveRight(){
 }
 
 function handleMove(to) {
-    toChar = boardState[to.x][to.y]
+    const toChar = boardState[to.x][to.y]
     switch (toChar) {
         case '#':
             break;
