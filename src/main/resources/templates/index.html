@@ -2,12 +2,17 @@
 <html lang="en" xmlns:th="">
 <head th:replace="fragments/head :: head('Lethani Landing')"></head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header class="lethani-header" th:replace="fragments/header :: header"></header>
 <main>
+    <div class="home-container">
     <div class="welcome-div">
-        <h1>Welcome to Lethani!</h1>
-        <p>Try the game out!</p>
+        <h1 class="h1-home">Welcome to Lethani!</h1>
+        <p>################Play the game!################</p>
+        <p>######Start playing the game by login below!######</p>
+        <p>##If you don't have an account yet, sign up today!##</p>
     </div>
+
+    <div class="login-div">
     <h2>Login</h2>
     <form action="/login" method="POST">
         <label for="username">Username</label>
@@ -16,8 +21,10 @@
         <label for="password">Password</label>
         <input id="password" type="password" name="Password">
 
-        <input type="submit" value="login">
+        <input class="btn-secondary" type="submit" value="login">
     </form>
+    </div>
+    </div>
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>

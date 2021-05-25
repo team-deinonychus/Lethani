@@ -15,10 +15,11 @@
                 <input class="form-control" id="password" type="password" name="password" required>
                 <label class="floatingInput" for="password">password</label>
             </div>
-            <input class="w-100 btn btn-lg btn-secondary" type="submit" value="signup">
-            <div >Already have an account? <a href="/login">log in</a></div>
+            <input class="w-100 btn btn-lg btn-secondary" type="submit" value="sign up">
+            <div>Already have an account? <a href="/login">log in</a></div>
         </form>
     </div>
+
 
     <div th:if="${errorMessage}" class="alert">
         <th:block th:text="${errorMessage}"></th:block>

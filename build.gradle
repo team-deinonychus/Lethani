@@ -20,9 +20,10 @@ dependencies {
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation 'org.webjars:stomp-websocket:2.3.3'
-//	compile('org.springframework.boot:spring-boot-starter-websocket')
-//	compile ('org.springframework.security:spring-security-messaging')
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
+	implementation 'com.amazonaws:aws-java-sdk-s3'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'org.postgresql:postgresql'
