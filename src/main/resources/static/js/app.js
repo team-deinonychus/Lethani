@@ -83,10 +83,12 @@ $(function () {
 
 //=====================game=====================
 
-var boardState;
+var boardState = [];
 
-function createBoard(){
-
+function updateBoard(board){
+    for(let i = 0; i < board.length(); i++) {
+        $("#gameBoardContainer").append("<p class='boardString'>" + board[i] + "</p>");
+    }
 }
 
 function moveUp(){
@@ -108,7 +110,7 @@ function moveRight(){
 function handleMove(from, to) {
     toChar = boardState[to.x][to.y]
     switch (toChar) {
-        case '#':            
+        case '#':
             break;
         case '.':
             move(from, to)
@@ -123,11 +125,11 @@ function handleMove(from, to) {
 }
 
 function move(from, to) {
-    
+
 }
 
 function attack(to) {
-    
+
 }
 
 function changeZones() {
