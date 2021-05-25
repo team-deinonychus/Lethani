@@ -155,7 +155,8 @@ function move(from, to) {
 }
 
 function attack(to) { //todo
-    var mob = mobs.find(mod => mob.position.x = to)
+    var mob = mobs.find(mod => (mob.position.x == to.x && mob.position.y == to.y))
+    console.log('fighting:' + mob);
     const damageDealt = Math.random() * ((player.attack * 1.2) - (player.attack * .8)) + (player.attack * .8);
     const damageTaken = Math.random() * ((player.attack * 1.2) - (player.attack * .8)) + (player.attack * .8);
     //deal damage
