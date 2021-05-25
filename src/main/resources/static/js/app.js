@@ -153,5 +153,5 @@ function changeZones() { //stretch
 
 function getCurrentBoard(boardName){
     longString = "file with board name"; //todo
-    return longString.split(/\r\n|\r|\n/g);
+    boardState = longString.split(/\r\n|\r|\n/g);
 }
