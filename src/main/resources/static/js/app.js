@@ -145,6 +145,7 @@ function handleMove(to) {
         default:
             break;
     }
+    updateBoard(boardState);
     stompClient.send("/app/gameLogic/1", {}, JSON.stringify({'board': boardState, 'player': playerPosition}));
 }
 
@@ -152,16 +153,31 @@ function move(from, to) {
     playerPosition = to;
     boardState[from.y][from.x] = ".";
     boardState[to.y][to.x] = "@";
+    //checkForMobs(); //stretch
 }
+
+//stretch timers and cool downs
 
 function attack(to) { //todo
     var mob = mobs.find(mod => (mob.position.x == to.x && mob.position.y == to.y))
     console.log('fighting:' + mob);
-    const damageDealt = Math.random() * ((player.attack * 1.2) - (player.attack * .8)) + (player.attack * .8);
-    const damageTaken = Math.random() * ((player.attack * 1.2) - (player.attack * .8)) + (player.attack * .8);
+    const damageDealt = Math.floor(Math.random() * ((player.attack * 1.2) - (player.attack * .8)) + (player.attack * .8));
+    const damageTaken = Math.floor(Math.random() * ((mob.attack * 1.2) - (mob.attack * .8)) + (mob.attack * .8));
     //deal damage
-
+    mob.hp = mob.hp - damageDealt;
+    if (mob.hp > 1) {
+        //remove the mob
+        for( var i = 0; i < mobs.length; i++){ 
+            if ( mobs[i] === mob) { 
+                mobs.splice(i, 1); 
+            }
+        }
+        boardState[to.y][to.x] = ".";
+        return;
+    } 
     //take damage
+    player.hp = player.hp - damageTaken;
+    if (player.hp > 1) {handleDeath() }
 }
 
 function changeZones() { //stretch
