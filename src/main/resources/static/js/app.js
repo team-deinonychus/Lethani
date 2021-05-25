@@ -8,7 +8,7 @@ window.addEventListener('beforeunload', disconnectMessageSocket)
 function setUp() {
     configSockets();
     createListeners();
-    createBoard();
+    getCurrentBoard();
     //TODO preload game state (low as any movement will cause sync for all players.)
 }
 
@@ -104,8 +104,6 @@ function updateBoard(board){
     }
 }
 
-function 
-
 function moveUp(){
     handleMove(playerPosition, playerPosition.y = y+1);
 }
@@ -145,11 +143,15 @@ function move(from, to) {
     boardState[to.y][to.x] = "@";
 }
 
-function attack(to) {
+function attack(to) { //todo
 
 }
 
-function changeZones() {
+function changeZones() { //stretch
     
 }
 
+function getCurrentBoard(boardName){
+    longString = "file with board name"; //todo
+    return longString.split(/\r\n|\r|\n/g);
+}
