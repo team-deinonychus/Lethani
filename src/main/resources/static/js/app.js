@@ -8,6 +8,7 @@ window.addEventListener('beforeunload', disconnectMessageSocket)
 function setUp() {
     configSockets();
     createListeners();
+    createBoard();
     //TODO preload game state (low as any movement will cause sync for all players.)
 }
 
