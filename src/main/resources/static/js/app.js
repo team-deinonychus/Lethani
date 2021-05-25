@@ -84,6 +84,7 @@ $(function () {
 //=====================game=====================
 
 var boardState = [];
+var playerPosition = {x: 0, y: 0}
 
 function updateBoard(board){
     for(let i = 0; i < board.length(); i++) {
@@ -92,19 +93,19 @@ function updateBoard(board){
 }
 
 function moveUp(){
-    handleMove();
+    handleMove(playerPosition, playerPosition.y = y+1);
 }
 
 function moveDown(){
-    handleMove();
+    handleMove(playerPosition, playerPosition.y = y-1);
 }
 
 function moveLeft(){
-    handleMove();
+    handleMove(playerPosition, playerPosition.x = x-1);
 }
 
 function moveRight(){
-    handleMove();
+    handleMove(playerPosition, playerPosition.x = x+1);
 }
 
 function handleMove(from, to) {
