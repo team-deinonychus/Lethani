@@ -90,28 +90,46 @@ function createBoard(){
 }
 
 function moveUp(){
-
+    handleMove();
 }
 
 function moveDown(){
-
+    handleMove();
 }
 
 function moveLeft(){
-
+    handleMove();
 }
 
 function moveRight(){
-
+    handleMove();
 }
 
-function move(from, to) {
-    fromChar = 
-    if (isAttack()) {
-        
+function handleMove(from, to) {
+    toChar = boardState[to.x][to.y]
+    switch (toChar) {
+        case '#':            
+            break;
+        case '.':
+            move(from, to)
+        case 'bad guy':
+            attack(to);
+        case 'edge of board and access to another zone':
+            changeZones();
+        default:
+            break;
     }
+    //update the board
 }
 
 function move(from, to) {
+    
+}
+
+function attack(to) {
+    
+}
+
+function changeZones() {
     
 }
