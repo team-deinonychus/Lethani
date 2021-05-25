@@ -1,37 +1,39 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head th:replace="fragments/head :: head('Play')"></head>
+
 <body>
-
-    <header th:replace="fragments/header :: header"></header>
-
-    <main>
-        <div class="gameDiv">
-            <div>
-                <progress class="hpBar" value="100" max="100"></progress>
-            </div>
-            <div class="xpDiv">
-                <p>Temp XP Holder</p>
-            </div>
-            <div class="gameBoard">
-            </div>
-            <!-- <div>
+    <div class="bodyDiv">
+        <header th:replace="fragments/header :: header"></header>
+        <main>
+            <div class="gameDiv">
+                <div>
+                    <progress class="hpBar" value="100" max="100"></progress>
+                </div>
+                <div class="xpDiv">
+                    <p>Temp XP Holder</p>
+                </div>
+                <div class="gameBoard">
+                </div>
+                <!-- <div>
                 <button class="inventoryButton"></button>
             </div> -->
-        </div>
-        <div class="messageDiv">
-            <div id="messageTable"></div>
-            <div class="messageInput">
-                <form class="messageFormField" name="messageForm">
-                    <input type="text" id="messageField" placeholder="Send a message!">
-                    <input id="messageSubmit" type="submit">
-                </form>
             </div>
-        </div>
-    </main>
+            <div class="messageDiv">
+                <div id="messageTable"></div>
+                <div class="messageInput">
+                    <form class="messageFormField" name="messageForm">
+                        <input type="text" id="messageField" placeholder="Send a message!">
+                        <input id="messageSubmit" type="submit">
+                    </form>
+                </div>
+            </div>
+        </main>
 
-    <footer th:replace="fragments/footer :: footer"></footer>
-
+        <footer th:replace="fragments/footer :: footer"></footer>
+    </div>
 </body>
 <script src="/js/app.js"></script>
+
 </html>

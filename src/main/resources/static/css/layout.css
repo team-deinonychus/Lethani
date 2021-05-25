@@ -110,7 +110,6 @@ div.nav-div {
     color: #1b3520;
 }
 
-
 /* Change navbar styling on small viewports */
 @media (max-width: 991.98px) {
     .navbar {
