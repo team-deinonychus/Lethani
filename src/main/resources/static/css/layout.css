@@ -8,11 +8,6 @@
  align-self: flex-start;
 }
 
-.img-gargoyle{
-    height: 30px;
-    width: 30px;
-}
-
 .img-castle-town{
     height: 190px;
     width: max-content;
@@ -61,14 +56,17 @@
     border-color: gray;
 }
 
-/* Nav Bar in fragment > header */
-/* Nav Bar font*/
-.text-small {
-    font-size: 0.9rem !important;
+/* About Us Page */
+.team {
+    margin-top: 5rem;
+    text-align: center;
 }
 
-div.nav-div {
-    text-align: center;
+
+.teamMemberPic {
+    height:250px;
+    width: 250px;
+    border-radius: 25%;
 }
 
 .navbar {
@@ -138,4 +136,5 @@ div.nav-div {
      height:5px;
      padding: 0;
      }
+
 
