@@ -84,7 +84,19 @@ $(function () {
 //=====================game=====================
 
 var boardState = [];
-var playerPosition = {x: 0, y: 0}
+var players = []; //player {username: jimbob, x: 0, y: 0}
+var playerPosition = {x: 0, y: 0};
+
+function receiveGameUpdate(newBoardState, newPlayerState) {
+    newPlayerState.forEach(player => {
+        var username = $("#username").val();
+        if (player.userName !== username) {
+            boardState[player.y][player.x] = '0';    
+        }
+    });
+    boardState[playerPosition.y][playerPosition.x] = '@'
+    updateBoard(boardState);
+}
 
 function updateBoard(board){
     for(let i = 0; i < board.length(); i++) {
@@ -136,3 +148,4 @@ function attack(to) {
 function changeZones() {
     
 }
+

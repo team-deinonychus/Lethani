@@ -36,9 +36,9 @@
                 </div>
             </div>
         </main>
-
         <footer th:replace="fragments/footer :: footer"></footer>
     </div>
+    <div id="username" hidden th:text="${userPrincipal.username}"></div>
 </body>
 <script src="/js/app.js"></script>
 
