@@ -4,6 +4,20 @@
    font-size: 2rem;
 }
 
+.img-div{
+ align-self: flex-start;
+}
+
+.img-gargoyle{
+    height: 30px;
+    width: 30px;
+}
+
+.img-haunted-forest{
+    height: 30px;
+    width: max-content;
+}
+
 .login-div{
     margin-top: 7rem;
     font-size: 1.5rem;
