@@ -4,12 +4,26 @@
    font-size: 2rem;
 }
 
+.img-div{
+ align-self: flex-start;
+}
+
+.img-gargoyle{
+    height: 30px;
+    width: 30px;
+}
+
+.img-castle-town{
+    height: 190px;
+    width: max-content;
+}
+
 .login-div{
-    margin-top: 7rem;
+    margin-top: 2rem;
     font-size: 1.5rem;
     border-style: double;
     border-color: #122415;
-    border-width: 15px;
+    border-width: 10px;
     background-color: rgb(12, 111, 24);
 }
 
