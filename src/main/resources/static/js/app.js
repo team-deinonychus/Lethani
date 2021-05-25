@@ -14,7 +14,7 @@ function connectMessageSocket() {
 
         console.log("Connected to Message Socket: " + frame);
         stompClient.subscribe('/game/messages', function(message) {
-            showMessage(JSON.parse(message.body).content);
+            receiveMessage(JSON.parse(message.body).content);
         });
 
         // TODO Needs the second socket connection for data inserted here.
@@ -29,23 +29,23 @@ function disconnectMessageSocket() {
     console.log("Disconnected from Socket");
 }
 
-function showMessage(message) {
-    console.log(userName + ': ' + message)
-    $("#messageTable").append("<tr><td>" `${userName}:` + message + "</tr></td>");
+function receiveMessage(message) {
+    var userName = message.substr(0, message.indexOf(' '));
+    var text = message.substr(message.indexOf(' ') +1);
+    // message = `${userName} ${text}`;
+    $("#messageTable").append("<p><span class='userNameText'>" + userName + " " + "</span><span class='textMessage'>" + text + "</span></p>");
 }
 
 function sendMessage() {
-    console.log("im herte")
-    var message = $("messageField".val());
-    console.log(message);
-    stompClient.send("/app/userTexts", {}, JSON.stringify({'message': $("messageField").val()}));
+    var message = $("#messageField").val();
+    var clearElement = document.getElementsByName('messageForm')[0];
+    clearElement.reset();
+    stompClient.send("/app/userTexts", {}, JSON.stringify({'message': message}));
 }
 
 $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
-    })
-    $('messageSubmit').click(function() {
         sendMessage();
     })
 });
