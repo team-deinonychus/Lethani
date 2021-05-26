@@ -15,9 +15,13 @@ repositories {
 jar {
 	manifest {
 		attributes(
-				'Main-Class': 'DemoApplication.java'
+				'Main-Class': 'com.f0rgiv.lethani.DemoApplication.java'
 		)
 	}
+}
+
+springBoot {
+	mainClassName = "com.f0rgiv.lethani.DemoApplication.java"
 }
 
 //bootRepackage {
