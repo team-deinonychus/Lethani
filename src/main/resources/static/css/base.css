@@ -1,9 +1,22 @@
 
 body {
     /* min-height: 110vh; */
+    text-align: center;
     background-color: #79b387;
     color: #132617;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+h1 {
+    /* color: #24512c; */
+    color: rgb(39, 7, 77);
+    font-size: 38px;
+}
+
+h2 {
+    /* color: #24512c; */
+    color: rgb(39, 7, 77);
+    font-size: 28px;
 }
 
 .text-small {
@@ -17,6 +30,8 @@ body {
 
 
 .home-container {
+    text-align: center;
+    margin-top: 3rem;
     /* justify-content: center; */
     /* margin-bottom: -25px; */
 }

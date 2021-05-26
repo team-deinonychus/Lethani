@@ -1,4 +1,8 @@
 /* Home Page*/
+.home-container {
+ margin-top: 5rem;
+}
+
 .welcome-div {
    margin-top: 5rem;
    font-size: 2rem;
@@ -20,6 +24,8 @@
     border-color: #122415;
     border-width: 10px;
     background-color: rgb(12, 111, 24);
+    margin-left: 150px;
+    margin-right: 150px;
 }
 
 /* Sign Up and Login Page*/
@@ -103,8 +109,8 @@
      background-color: rgb(12, 111, 24);
      padding: 5px;
      margin: 50px;
-     margin-right: 500px;
-     margin-left: 500px;
+     margin-right: 300px;
+     margin-left: 300px;
 }
 
 .leader-ul {
@@ -128,4 +134,47 @@
 .assassin-img{
     height: 100px;
     width: 100px;
+}
+
+/* Profile page */
+.h1-profile {
+    margin-top: 5rem;
+    border-style: ridge solid ridge solid;
+    border-color: #2e6838;
+    border-width: 10px;
+    margin-right: 400px;
+    margin-left: 400px;
+}
+
+.profile-main {
+    text-align: center;
+}
+
+.player-ul{
+    list-style-type: none;
+    margin-top: 2rem;
+}
+
+.li-status{
+    font-size: 25px;
+}
+
+#profile-form {
+    margin-bottom: 1rem!important;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.p-profile-pg{
+    font-size: 15px;
+}
+
+.div-player{
+    margin-top: 3rem;
+}
+
+.woods-img {
+    margin-top: 2rem;
+    height: 130px;
+    width: 800px;
 }
