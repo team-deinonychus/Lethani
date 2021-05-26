@@ -30,6 +30,11 @@
         <footer th:replace="fragments/footer :: footer"></footer>
     </div>
     <div id="username" hidden th:text="${userPrincipal.username}"></div>
+    <div id="className" hidden th:text="${userPrincipal.character.characterClass.name}"></div>
+    <div id="classHp" hidden th:text="${userPrincipal.character.characterClass.hpMultiplier}"></div>
+    <div id="classAttack" hidden th:text="${userPrincipal.character.characterClass.attackMultiplier}"></div>
+    <div id="xp" hidden th:text="${userPrincipal.character.xp}"></div>
+    <div id="hp" hidden th:text="${userPrincipal.character.hp}"></div>
 </body>
 <script src="/js/app.js"></script>
 

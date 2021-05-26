@@ -37,6 +37,19 @@ public class CharacterClass {
     public String getName() {
         return name;
     }
+
+    public double getHpMultiplier() {
+        return hpMultiplier;
+    }
+
+    public double getAttackMultiplier() {
+        return attackMultiplier;
+    }
+
+    public double getDefenceMultiplier() {
+        return defenceMultiplier;
+    }
+
     //=====================Setters====================
 
 }
