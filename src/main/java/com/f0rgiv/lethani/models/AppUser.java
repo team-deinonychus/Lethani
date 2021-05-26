@@ -89,4 +89,6 @@ public class AppUser implements UserDetails {
     public void setImageExtension(String imageExtension) {
         this.imageExtension = imageExtension;
     }
+
+    public void setCharacter(Character character) { this.character = character; }
 }
