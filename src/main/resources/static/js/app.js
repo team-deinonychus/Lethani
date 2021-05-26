@@ -11,7 +11,12 @@ function setUp() {
     getCurrentBoard();
     setPlayerStats();
     createListeners();
+    setTimeout(() => {serverMessagePlayerJoin();}, 1000);
 }
+
+
+
+
 
 //=====================setup=====================
 
@@ -97,11 +102,14 @@ $(function () {
     })
 });
 
-// function serverMessage() {
-//     var username = $("#username").val();
-//     var message = `[SERVER] ${use}`
-// stompClient.send("/app/userTexts", {}, JSON.stringify({'message': message}));
-// }
+function serverMessagePlayerJoin() {
+    var username = $("#username").text();
+    console.log(username)
+    var message = `[SERVER]: ${username} has joined!`
+    stompClient.send("/app/userTexts", {}, JSON.stringify({'message': message}));
+}
+
+
 //=====================game=====================
 
 var boardState = [];
@@ -111,7 +119,7 @@ var mobs = []; //mob {name: theirName, hp: 20, attack: 5, position{x: 0, y: 0}}
 
 function receiveGameUpdate(newPlayerStates) {
     newPlayerStates.forEach(otherPlayer => {
-        var username = $("#username").val();
+        var username = $("#username").text();
         if (otherPlayer.userName !== username) {
             boardState[otherPlayer.y].replaceAt([otherPlayer.x], "0");
         }
