@@ -15,7 +15,7 @@ repositories {
 jar {
 	manifest {
 		attributes(
-				'Main-Class': 'com.forgiv.lethani'
+				'Main-Class': 'com.forgiv.lethani.LethaniApplication'
 		)
 	}
 }
