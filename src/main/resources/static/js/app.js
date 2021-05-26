@@ -57,8 +57,7 @@ function configSockets() {
 
         console.log("Connected to starting zone: " + frame);
         stompClient.subscribe('/game/zone/1', function (location) {
-            console.log(location.body);
-            recievePlayerPositionUpdate(JSON.parse(location.body));
+            receiveGameUpdate(JSON.parse(location.body));
         });
     });
 }
@@ -110,7 +109,7 @@ var players = []; //player {username: jimbob, x: 0, y: 0}
 var player;
 var mobs = []; //mob {name: theirName, hp: 20, attack: 5, position{x: 0, y: 0}}
 
-function receiveGameUpdate(newBoardState, newPlayerStates) {
+function receiveGameUpdate(newPlayerStates) {
     newPlayerStates.forEach(otherPlayer => {
         var username = $("#username").val();
         if (otherPlayer.userName !== username) {
