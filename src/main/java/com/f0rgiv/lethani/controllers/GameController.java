@@ -14,23 +14,24 @@ import java.util.List;
 public class GameController {
 
     ArrayList<Player> playerList = new ArrayList<>();
-    Position test = new Position(10, 12);
-    Player newPlayer = new Player(test);
 
     @MessageMapping("/gameLogic/1")
     @SendTo("/game/zone/1")
-    public List<Player> playerResponse(Principal principal, Player position) throws Exception {
+    public List<Player> playerResponse(Principal principal, Position position) throws Exception {
 
-        if(playerList.size() == 0) {
-            newPlayer.setName("searoids");
-            playerList.add(newPlayer);
-        }
+        //if the player is in list update location
+        boolean notFound = true;
         for (Player player : playerList) {
-            if (player.getName().equals(principal.getName())) {
-                player.setPosition(position.getPosition());
+            if (player.getName().equals(principal.getName())){
+                player.setPosition(position);
+                notFound = false;
+                break;
             }
         }
+        //else add player to list
+        if(notFound) {
+            playerList.add(new Player(position, principal.getName()));
+        }
         return playerList;
-
     }
 }

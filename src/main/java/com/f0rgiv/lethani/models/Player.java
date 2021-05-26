@@ -7,6 +7,11 @@ public class Player {
     public Player() {
     }
 
+    public Player(Position position, String name) {
+        this.position = position;
+        this.name = name;
+    }
+
     public Player(Position player) {
         this.position = player;
     }
