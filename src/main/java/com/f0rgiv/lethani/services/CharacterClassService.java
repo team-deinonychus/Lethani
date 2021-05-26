@@ -17,9 +17,9 @@ public class CharacterClassService {
         List<CharacterClass> classes = characterClassRepository.findAll();
         //if classes don't exist in db create them and then return them.
         if (classes.size() == 0) {
-            classes.add(new CharacterClass("tank", 2, .75, 2));
-            classes.add(new CharacterClass("rouge", 1, 1.25, 1));
-            classes.add(new CharacterClass("attacker", 1.25, 2, 1));
+            classes.add(new CharacterClass("warrior", 2, .75, 2));
+            classes.add(new CharacterClass("wizard", 1, 1.25, 1));
+            classes.add(new CharacterClass("assassin", 1.25, 2, 1));
             classes.forEach(cc -> characterClassRepository.save(cc));
         }
         return classes;
