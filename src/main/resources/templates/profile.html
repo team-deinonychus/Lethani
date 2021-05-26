@@ -1,61 +1,71 @@
 <!doctype html>
 <html lang="en" xmlns:th="">
+
 <head th:replace="fragments/head :: head('Profile')"></head>
+
 <body>
-<header th:replace="./fragments/header :: header"></header>
-<main class="profile-main">
-    <h1 class="h1-profile">Profile</h1>
-    <img class="woods-img" src="/assets/dark-woods.jpeg" alt="Dragon flying above woods">
+    <header th:replace="./fragments/header :: header"></header>
+    <main class="profile-main">
+        <h1 class="h1-profile">Profile</h1>
+        <img class="woods-img" src="/assets/dark-woods.jpeg" alt="Dragon flying above woods">
 
-    <div class="div-player">
-        <h2>Player Information:</h2>
-<!--        <img src="https://via.placeholder.com/150" alt="your class/character picture">-->
-        <ul class="player-ul">
-            <li class="li-status">Status</li>
-            <li>---------------</li>
-            <li>Player XP:</li>
-            <li>Mobs killed:</li>
-        </ul>
-    </div>
-
-    <div>
-        <h2>Choose a picture for your profile:</h2>
-        <img alt="profile picture" loading="lazy"
-             th:src="${@appUserService.getProfilePicturePath(userPrincipal)}">
-        <form id="profile-form" class="p-3" action="/profile/image?_method=PUT" method="post" enctype="multipart/form-data">
-            <fieldset class="mb-3">
-                <label for="image-upload"></label>
-                <input class="form-control form-control-sm"
-                       name="image"
-                       id="image-upload"
-                       type="file" accept="image/*"></input>
-            </fieldset>
-            <input type="submit" value="Change Profile Image"></input>
-        </form>
-    </div>
-                <!--Add the ability to choose and add a class-->
-        <div>
-            <h2>Reset and change your class</h2>
-            <p class="p-profile-pg">Your Class</p>
-<!--            <img class="warrior-img" src="/assets/warrior.png" alt="your class picture">-->
-<!--            <img class="wizard-img" src="/assets/wizard.png" alt="your class picture">-->
-<!--            <img class="assassin-img" src="/assets/assassin.png" alt="your class picture">-->
+        <div class="div-player">
+            <h2>Player Information:</h2>
+            <ul class="player-ul">
+                <li class="li-status">Status</li>
+                <li>---------------</li>
+                <li>Player XP:</li>
+                <li>Mobs killed:</li>
+            </ul>
         </div>
 
-    <div>
-        <h2>Class Information</h2>
-        <img class="warrior-img" src="/assets/warrior.png" alt="your class picture">
-        <p class="p-profile-pg"><strong>Warrior</strong></p>
-        <p> - Abilities: Move, Attack</p>
-        <img class="wizard-img" src="/assets/wizard.png" alt="your class picture">
-        <p class="p-profile-pg"><strong>Wizard</strong></p>
-        <p> - Abilities: Move, Attack</p>
-        <img class="assassin-img" src="/assets/assassin.png" alt="your class picture">
-        <p class="p-profile-pg"><strong>Assassin</strong></p>
-        <p> - Abilities: Move, Attack</p>
-    </div>
+        <div>
+            <img alt="profile picture" loading="lazy" th:src="${@appUserService.getProfilePicturePath(userPrincipal)}">
+            <h2>Choose a picture for your profile:</h2>
+            <form id="profile-form" class="p-3" action="/profile/image?_method=PUT" method="post"
+                enctype="multipart/form-data">
+                <fieldset class="mb-3">
+                    <label for="image-upload"></label>
+                    <input class="form-control form-control-sm" name="image" id="image-upload" type="file"
+                        accept="image/*"></input>
+                </fieldset>
+                <input type="submit" value="Change Profile Image"></input>
+            </form>
+        </div>
+        <!--Add the ability to choose and add a class-->
+        <div>
+            <form id="profile-form" class="p-3" action="/profile/image?_method=PUT" method="post">
+            <h2>Class Information</h2>
+            <input type="submit" value="Reset and change your class"></input>
+            <div>
+                <p class="p-profile-pg"><strong>Warrior</strong></p>
+                <label>
+                    <input type="radio" name="characterClass" value="small" checked>
+                    <img src="/assets/warrior.png">
+                </label>  
+                <p> - Abilities: Move, Attack</p>
+            </div>
+            <div>
+                <p class="p-profile-pg"><strong>Wizard</strong></p>
+                <label>
+                    <input type="radio" name="characterClass" value="small" checked>
+                    <img src="/assets/wizard.png">
+                </label>  
+                <p> - Abilities: Move, Attack</p>
+            </div>
+            <div>
+                <p class="p-profile-pg"><strong>Assassin</strong></p>
+                <label>
+                    <input type="radio" name="characterClass" value="small" checked>
+                    <img src="/assets/assassin.png">
+                </label>  
+                <p> - Abilities: Move, Attack</p>
+            </div>
+        </form>
+        </div>
 
-</main>
-<footer th:replace="./fragments/footer :: footer"></footer>
+    </main>
+    <footer th:replace="./fragments/footer :: footer"></footer>
 </body>
+
 </html>

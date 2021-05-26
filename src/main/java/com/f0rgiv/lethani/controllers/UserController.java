@@ -82,6 +82,26 @@ public class UserController {
         return new RedirectView("/profile");
     }
 
+    /**
+     * @return updates profile picture for the principal.user
+     * Put /profile/image
+     * Requires authentication
+     * <p>
+     * Allows a user to update their profile picture by uploading a new one.
+     */
+    @PutMapping("/profile/image")
+    public RedirectView updateProfileClass( @RequestParam("image") MultipartFile multipartFile,
+                                            HttpServletRequest request) throws IOException {
+        AppUser userPrincipal = appUserRepository.findByUsername(request.getUserPrincipal().getName());
+
+        try {
+            appUserService.updateProfilePicture(userPrincipal, multipartFile);
+        } catch (InvalidContentTypeException e) {
+            return new RedirectView("/profile?error=content_type");
+        }
+        appUserRepository.save(userPrincipal);
+        return new RedirectView("/profile");
+    }
 
     /**
      * @return users profile information to the leader board page
