@@ -1,12 +1,14 @@
 package com.f0rgiv.lethani.controllers;
 
 import com.f0rgiv.lethani.models.AppUser;
+import com.f0rgiv.lethani.models.Character;
 import com.f0rgiv.lethani.models.CharacterClass;
 import com.f0rgiv.lethani.models.HighScore;
 import com.f0rgiv.lethani.repositories.AppUserRepository;
+import com.f0rgiv.lethani.repositories.CharacterClassRepository;
 import com.f0rgiv.lethani.repositories.CharacterRepository;
-import com.f0rgiv.lethani.repositories.HighScoreRepository;
 import com.f0rgiv.lethani.services.AppUserService;
+import com.f0rgiv.lethani.services.CharacterClassService;
 import org.apache.tomcat.util.http.fileupload.impl.InvalidContentTypeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +31,10 @@ public class UserController {
     AppUserRepository appUserRepository;
 
     @Autowired
-    HighScoreRepository highScoreRepository;
+    CharacterRepository characterRepository;
+
+    @Autowired
+    CharacterClassService characterClassService;
 
     @Autowired
     AppUserService appUserService;
@@ -83,23 +88,18 @@ public class UserController {
     }
 
     /**
-     * @return updates profile picture for the principal.user
-     * Put /profile/image
+     * @return updates the cherectarClass for the principal.user
+     * Put /profile/class
      * Requires authentication
      * <p>
      * Allows a user to update their profile picture by uploading a new one.
      */
-    @PutMapping("/profile/image")
-    public RedirectView updateProfileClass( @RequestParam("image") MultipartFile multipartFile,
-                                            HttpServletRequest request) throws IOException {
-        AppUser userPrincipal = appUserRepository.findByUsername(request.getUserPrincipal().getName());
-
-        try {
-            appUserService.updateProfilePicture(userPrincipal, multipartFile);
-        } catch (InvalidContentTypeException e) {
-            return new RedirectView("/profile?error=content_type");
-        }
-        appUserRepository.save(userPrincipal);
+    @PutMapping("/profile/class")
+    public RedirectView updateProfileClass( @RequestParam("characterClass") String className,
+                                            HttpServletRequest request) {
+        Character character = appUserRepository.findByUsername(request.getUserPrincipal().getName()).getCharacter();
+        character.setCharacterClass(characterClassService.findByName(className));
+        characterRepository.save(character);
         return new RedirectView("/profile");
     }
 
