@@ -112,7 +112,7 @@ public class UserController {
      * **/
 
     @GetMapping("/leaderboard")
-    public String addProfileInformationToLeaderBoard(Model model, Name name, CharacterClass characterClass, HighScore highScore) {
+    public String addProfileInformationToLeaderBoard(Model model) {
         List<AppUser> appUsers = appUserRepository.findAll();
         List<HighScore> highScores = new ArrayList<>();
         for (AppUser user : appUsers){

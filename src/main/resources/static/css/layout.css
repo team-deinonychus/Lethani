@@ -17,15 +17,19 @@
     width: max-content;
 }
 
-.login-div{
+#login-div{
     margin-top: 2rem;
     font-size: 1.5rem;
     border-style: double;
     border-color: #122415;
     border-width: 10px;
     background-color: rgb(12, 111, 24);
-    margin-left: 150px;
-    margin-right: 150px;
+    margin-left: 125px;
+    margin-right: 125px;
+}
+
+.h1-home {
+    font-size: 60px;
 }
 
 /* Sign Up and Login Page*/
