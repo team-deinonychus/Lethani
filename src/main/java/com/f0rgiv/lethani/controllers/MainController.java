@@ -24,7 +24,4 @@ public class MainController {
 
     @GetMapping("/play")
     public String getPlay() { return "play"; }
-
-    @GetMapping("/leaderboard")
-    public String getLeaderBoard(){ return "leader-board";}
 }
