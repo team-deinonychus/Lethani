@@ -112,19 +112,21 @@ function serverMessagePlayerJoin() {
 
 //=====================game=====================
 
+var currentMap = [];
 var boardState = [];
 var players = []; //player {username: jimbob, x: 0, y: 0}
 var player;
 var mobs = []; //mob {name: theirName, hp: 20, attack: 5, position{x: 0, y: 0}}
 
 function receiveGameUpdate(newPlayerStates) {
+    boardState = currentMap.map((x) => x);
     newPlayerStates.forEach(otherPlayer => {
         var username = $("#username").text();
-        if (otherPlayer.userName !== username) {
-            boardState[otherPlayer.y].replaceAt([otherPlayer.x], "0");
+        if (otherPlayer.userName != username) {
+            boardState[otherPlayer.position.y] = boardState[otherPlayer.position.y].replaceAt(otherPlayer.position.x, '0');
         }
     });
-    boardState[player.position.y].replaceAt([player.position.x], "0");
+    boardState[player.position.y] = boardState[player.position.y].replaceAt(player.position.x, '@');
     updateBoard(boardState);
 }
 
@@ -204,7 +206,6 @@ function attack(to) { //todo
             }
         }
         boardState[to.y].replaceAt([to.x], '.');
-        // replaceAt(boardState[to.y], [to.x], ".");
         return;
     } 
     //take damage
@@ -235,6 +236,11 @@ function getCurrentBoard() {
         success: (data) => {
             boardState = data.split(/\r\n|\r|\n/g);
             updateBoard(boardState);
+            currentMap = boardState.map((x) => x);
+            boardState.forEach(str => {
+                str.replace('@', '.')
+            });
+            // boardState.forEach(str => str.replace('@', '.'));
             for (let i = 0; i < boardState.length; i++) {
                     for (let j = 0; j < boardState[0].length; j++) {
                         let char = boardState[i][j];
@@ -255,4 +261,8 @@ function configStrings(){
         let temp = this.slice(0, index) + replacement + this.slice(index + replacement.length);
         return temp
     }
+}
+
+function updateXp(xp){
+    //send it up
 }
