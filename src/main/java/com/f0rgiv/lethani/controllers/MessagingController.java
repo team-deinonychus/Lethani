@@ -14,6 +14,12 @@ public class MessagingController {
     @MessageMapping("/userTexts")
     @SendTo("/game/messages")
     public UserTexts userTexts(Principal principal, Message message) throws Exception {
+
+        System.out.println(message.getMessage());
+        if(message.getMessage().contains("[SERVER]")) {
+            System.out.println("lofge");
+            return new UserTexts(HtmlUtils.htmlEscape(message.getMessage()));
+        }
         String userTag = principal.getName();
         String returnText = String.format("%s: %s", userTag, message.getMessage());
         return new UserTexts(HtmlUtils.htmlEscape(returnText));
