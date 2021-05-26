@@ -26,9 +26,6 @@ public class MainController {
     @GetMapping("/play")
     public String getPlay() { return "play"; }
 
-    @GetMapping("/leaderboard")
-    public String getLeaderBoard(){ return "leader-board";}
-
     @PostMapping("/updatexp/{xp}")
     public void updateXp(@PathVariable String xp, Principal principal) {
         int newXp = Integer.parseInt(xp);
