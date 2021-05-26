@@ -1,6 +1,7 @@
 package com.f0rgiv.lethani.controllers;
 
 import com.f0rgiv.lethani.models.AppUser;
+import com.f0rgiv.lethani.models.Character;
 import com.f0rgiv.lethani.repositories.AppUserRepository;
 import com.f0rgiv.lethani.services.PasswordReqService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,8 @@ public class AuthController {
 //      ================ Create User =============
 
         AppUser user = new AppUser(username, passwordEncoder.encode(password), username);
+        Character character = new Character(username, user);
+        user.setCharacter(character);
         appUserRepository.save(user);
 
 //      ============== Sign in User ============
