@@ -16,6 +16,10 @@ function setUp() {
     setTimeout(() => { serverMessagePlayerJoin(); }, 1000);
 }
 
+
+
+
+
 //=====================setup=====================
 
 function createListeners() {
@@ -271,7 +275,9 @@ function configStrings() {
     }
 }
 
-function updateXp(xp) {
+function updateXp(xp){
+    player.xp += xp;
+
     $.ajax({
         url: `http://localhost:8080/updatexp/${xp}`,
         type: "POST",
@@ -282,4 +288,22 @@ function updateXp(xp) {
             console.log(error);
         }
     })
+}
+
+function loadHp(hp) {
+    player.currentHp
+    var g = document.createElement("progress");
+    g.setAttribute("id", "pBar");
+    g.setAttribute("value", `${hp}`);
+    g.setAttribute("max", `${hp}`);
+    g.setAttribute("min", 0);
+    document.getElementById("hpBar").appendChild(g);
+}
+
+function updateHealth(hp) {
+
+    var currentHp = document.getElementById("pBar").getAttribute("value");
+    var newHp = parseInt(hp) + parseInt(currentHp);
+    player.currentHp = newHp;
+    document.getElementById("pBar").setAttribute("value", newHp.toString());
 }

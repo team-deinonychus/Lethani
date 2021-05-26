@@ -182,3 +182,7 @@
     height: 130px;
     width: 800px;
 }
+
+.progress {
+    max-width: 250px;
+}
