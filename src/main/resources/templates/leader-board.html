@@ -13,32 +13,32 @@
             <img class="leader-img" src="/assets/haunted-woods.jpeg" alt="Woods">
 
             <div class="users-leaders">
-                <div class="user-class-score">
-                    <img class="warrior-img" src="/assets/warrior.png" alt="profile picture">
+                <div class="user-class-score" th:each="highScore : ${highScores}">
+<!--                    <img class="warrior-img"  th:src="${@appUserService.getProfilePicturePath(userPrincipal)}" alt="profile picture">-->
                     <ul class="leader-ul">
-                        <li>Username: Garhett</li>
-                        <li>Class: Warrior</li>
-                        <li>XP: 50</li>
+                        <li th:text="${highScore.name}">Username </li>
+                        <li th:text="${highScore.characterClass}">Class</li>
+                        <li th:text="${highScore.highScore}">XP</li>
                     </ul>
                 </div>
 
-                <div class="user-class-score">
-                    <img class="wizard-img" src="/assets/wizard.png" alt="wizard picture">
-                    <ul class="leader-ul">
-                        <li>Username: James</li>
-                        <li>Class: Wizard</li>
-                        <li>XP: 50</li>
-                    </ul>
-                </div>
+<!--                <div class="user-class-score">-->
+<!--                    <img class="wizard-img" src="/assets/wizard.png" alt="wizard picture">-->
+<!--                    <ul class="leader-ul">-->
+<!--                        <li>Username: James</li>-->
+<!--                        <li>Class: Wizard</li>-->
+<!--                        <li>XP: 50</li>-->
+<!--                    </ul>-->
+<!--                </div>-->
 
-                <div class="user-class-score">
-                    <img class="assassin-img" src="/assets/assassin.png" alt="assassin picture">
-                    <ul class="leader-ul">
-                        <li>Username: Amelia</li>
-                        <li>Class: Assassin</li>
-                        <li>XP: 50</li>
-                    </ul>
-                </div>
+<!--                <div class="user-class-score">-->
+<!--                    <img class="assassin-img" src="/assets/assassin.png" alt="assassin picture">-->
+<!--                    <ul class="leader-ul">-->
+<!--                        <li>Username: Amelia</li>-->
+<!--                        <li>Class: Assassin</li>-->
+<!--                        <li>XP: 50</li>-->
+<!--                    </ul>-->
+<!--                </div>-->
 
             </div>
         </div>

@@ -1,24 +1,35 @@
 package com.f0rgiv.lethani.controllers;
 
 import com.f0rgiv.lethani.models.AppUser;
+import com.f0rgiv.lethani.models.CharacterClass;
+import com.f0rgiv.lethani.models.HighScore;
 import com.f0rgiv.lethani.repositories.AppUserRepository;
+import com.f0rgiv.lethani.repositories.CharacterRepository;
+import com.f0rgiv.lethani.repositories.HighScoreRepository;
 import com.f0rgiv.lethani.services.AppUserService;
 import org.apache.tomcat.util.http.fileupload.impl.InvalidContentTypeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.lang.model.element.Name;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class UserController {
     @Autowired
     AppUserRepository appUserRepository;
+
+    @Autowired
+    HighScoreRepository highScoreRepository;
 
     @Autowired
     AppUserService appUserService;
@@ -69,5 +80,25 @@ public class UserController {
         }
         appUserRepository.save(userPrincipal);
         return new RedirectView("/profile");
+    }
+
+
+    /**
+     * @return users profile information to the leader board page
+     * Get /leaderboard
+     * Requires authentication
+     * <p>
+     * Allows user to post user image and score to the leader board
+     * **/
+
+    @GetMapping("/leaderboard")
+    public String addProfileInformationToLeaderBoard(Model model, Name name, CharacterClass characterClass, HighScore highScore) {
+        List<AppUser> appUsers = appUserRepository.findAll();
+        List<HighScore> highScores = new ArrayList<>();
+        for (AppUser user : appUsers){
+            highScores.add(new HighScore(user.getUsername(), user.getCharacter().getCharacterClass().getName(), user.getCharacter().getXp()));
+        }
+        model.addAttribute("highScores", highScores);
+        return "leader-board";
     }
 }

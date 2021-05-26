@@ -38,6 +38,30 @@ public class Character {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public CharacterClass getCharacterClass() {
+        return characterClass;
+    }
+
     //=====================Setters====================
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
 }
