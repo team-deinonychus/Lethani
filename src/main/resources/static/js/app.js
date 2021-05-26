@@ -13,7 +13,10 @@ function setUp() {
     setPlayerStats();
     createListeners();
     updateXp(3);
-    setTimeout(() => {serverMessagePlayerJoin();}, 1000);
+    setTimeout(() => {
+        loadHp(50);
+        serverMessagePlayerJoin();
+    }, 1000);
 }
 
 
@@ -70,7 +73,7 @@ function configSockets() {
 }
 
 function setPlayerStats(){
-    player  = {'position':{'x': 10, 'y': 13}, 'hp': 1, 'attack': 1, 'modifiers':{'attack': 1, 'defence': 1} };//todo
+    player  = {'position':{'x': 10, 'y': 13}, 'xp': 0, 'hp': 1, 'currentHp': 1, 'attack': 1, 'modifiers':{'attack': 1, 'defence': 1} };//todo
 };
 
 //=====================messaging=====================
@@ -266,6 +269,8 @@ function configStrings(){
 }
 
 function updateXp(xp){
+    player.xp += xp;
+
     $.ajax({
         url: `http://localhost:8080/updatexp/${xp}`,
         type: "POST",
@@ -276,4 +281,22 @@ function updateXp(xp){
             console.log(error);
         }
     })
+}
+
+function loadHp(hp) {
+    player.currentHp
+    var g = document.createElement("progress");
+    g.setAttribute("id", "pBar");
+    g.setAttribute("value", `${hp}`);
+    g.setAttribute("max", `${hp}`);
+    g.setAttribute("min", 0);
+    document.getElementById("hpBar").appendChild(g);
+}
+
+function updateHealth(hp) {
+    
+    var currentHp = document.getElementById("pBar").getAttribute("value");
+    var newHp = parseInt(hp) + parseInt(currentHp);
+    player.currentHp = newHp;
+    document.getElementById("pBar").setAttribute("value", newHp.toString());
 }
