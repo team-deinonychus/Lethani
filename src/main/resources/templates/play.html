@@ -14,8 +14,7 @@
                 <div class="xpDiv">
                     <p>Temp XP Holder</p>
                 </div>
-                <div class="gameBoard">
-                </div>
+                <div id="gameBoardContainer"></div>
                 <!-- <div>
                 <button class="inventoryButton"></button>
             </div> -->
@@ -30,9 +29,9 @@
                 </div>
             </div>
         </main>
-
         <footer th:replace="fragments/footer :: footer"></footer>
     </div>
+    <div id="username" hidden th:text="${userPrincipal.username}"></div>
 </body>
 <script src="/js/app.js"></script>
 

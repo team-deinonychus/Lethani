@@ -2,24 +2,72 @@
 
 var stompClient = null;
 
-window.addEventListener("load", connectMessageSocket);
+window.addEventListener("load", setUp());
 window.addEventListener('beforeunload', disconnectMessageSocket)
 
-function connectMessageSocket() {
+function setUp() {
+    configStrings();
+    configSockets();
+    getCurrentBoard();
+    setPlayerStats();
+    createListeners();
+    keyPress();
+}
 
+//=====================setup=====================
+
+function createListeners() {
+    let testArea = document
+    testArea.addEventListener('keydown', (e) => {
+        console.log(e.key);
+        switch (e.key) {
+            case 'w': //up
+                console.log("moving up")
+                trigger_beep();
+                moveUp();
+                break;
+            case 's': //down
+                trigger_beep();
+                moveDown();
+                break;
+            case 'a': //left
+                trigger_beep();
+                moveLeft();
+                break;
+            case 'd': //right
+                trigger_beep();
+                moveRight();
+                break;
+            default:
+                break;
+        }
+    });
+}
+
+
+function configSockets() {
     var socket = new SockJS('/lethani');
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
 
         console.log("Connected to Message Socket: " + frame);
-        stompClient.subscribe('/game/messages', function(message) {
+        stompClient.subscribe('/game/messages', function (message) {
             receiveMessage(JSON.parse(message.body).content);
         });
 
-        // TODO Needs the second socket connection for data inserted here.
-    })
+        console.log("Connected to starting zone: " + frame);
+        stompClient.subscribe('/game/zone/1', function (location) {
+            receiveMessage(JSON.parse(location.body).content);
+        });
+    });
 }
+
+function setPlayerStats(){
+    player  = {'position':{'x': 10, 'y': 13}, 'hp': 1, 'attack': 1, 'modifiers':{'attack': 1, 'defence': 1} };//todo
+};
+
+//=====================messaging=====================
 
 function disconnectMessageSocket() {
     if(stompClient !== null) {
@@ -49,3 +97,151 @@ $(function () {
         sendMessage();
     })
 });
+
+//=====================game=====================
+
+var boardState = [];
+var players = []; //player {username: jimbob, x: 0, y: 0}
+var player;
+var mobs = []; //mob {name: theirName, hp: 20, attack: 5, position{x: 0, y: 0}}
+
+function receiveGameUpdate(newBoardState, newPlayerStates) {
+    newPlayerStates.forEach(otherPlayer => {
+        var username = $("#username").val();
+        if (otherPlayer.userName !== username) {
+            boardState[otherPlayer.y].replaceAt([otherPlayer.x], "0");
+        }
+    });
+    boardState[player.position.y].replaceAt([player.position.x], "0");
+    updateBoard(boardState);
+}
+
+function updateBoard(board){
+    console.log("updating board")
+    $("#gameBoardContainer").empty();
+    for(let i = 0; i < board.length; i++) {
+        $("#gameBoardContainer").append("<p class='boardString'>" + board[i] + "</p>");
+    }
+}
+
+function moveUp(){
+    console.log("moving up")
+    handleMove({'x': player.position.x, 'y': player.position.y -1});
+}
+
+function moveDown(){
+    handleMove({'x': player.position.x, 'y': player.position.y +1});
+}
+
+function moveLeft(){
+    handleMove({'x': player.position.x -1, 'y': player.position.y});
+}
+
+function moveRight(){
+    handleMove({'x': player.position.x +1, 'y': player.position.y});
+}
+
+function handleMove(to) {
+    console.log("entering handle move");
+    const toChar = boardState[to.y][to.x];
+    console.log(player.position);
+    switch (toChar) {
+        case '#':
+            console.log("ran into a wall");
+            break;
+        case '.':
+            console.log("moving");
+            move(player.position, to);
+            break;
+        case '&':
+            console.log("attacking");
+            attack(to);
+            break;
+        case 'edge of board and access to another zone':
+            changeZones();
+            break;
+        default:
+            break;
+    }
+    console.log(player.position);
+    updateBoard(boardState);
+//    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({'board': boardState, 'player': player}));
+}
+
+function move(from, to) {
+    player.position = to;
+    console.log(boardState[from.y]);
+    boardState[from.y] = boardState[from.y].replaceAt(from.x, '.');
+    boardState[to.y] = boardState[to.y].replaceAt(to.x, '@');
+    console.log(boardState[from.y]);
+}
+
+//stretch timers and cool downs
+
+function attack(to) { //todo
+    var mob = mobs.find(mod => (mob.position.x == to.x && mob.position.y == to.y))
+    console.log('fighting:' + mob);
+    const damageDealt = Math.floor(Math.random() * ((player.attack * 1.2) - (player.attack * .8)) + (player.attack * .8));
+    const damageTaken = Math.floor(Math.random() * ((mob.attack * 1.2) - (mob.attack * .8)) + (mob.attack * .8));
+    //deal damage
+    mob.hp = mob.hp - damageDealt;
+    if (mob.hp > 1) {
+        //remove the mob
+        for( var i = 0; i < mobs.length; i++){ 
+            if ( mobs[i] === mob) { 
+                mobs.splice(i, 1); 
+            }
+        }
+        boardState[to.y].replaceAt([to.x], '.');
+        // replaceAt(boardState[to.y], [to.x], ".");
+        return;
+    } 
+    //take damage
+    player.hp = player.hp - damageTaken;
+    if (player.hp > 1) {handleDeath() }
+}
+
+function changeZones() { //stretch
+    
+}
+
+function handleDeath() {
+    //show game over
+
+    //remove player from game map
+
+    //stretch replace player on map with bones or something.
+}
+
+function trigger_beep() {
+    let sound = new Audio("data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");
+    sound.play();
+}
+function getCurrentBoard() {
+
+    $.ajax({
+        url:'\\assets\\boards\\zone1.txt',
+        success: (data) => {
+            boardState = data.split(/\r\n|\r|\n/g);
+            updateBoard(boardState);
+            for (let i = 0; i < boardState.length; i++) {
+                    for (let j = 0; j < boardState[0].length; j++) {
+                        const char = boardState[i][j];
+                        if (char = '&') {
+                            mobs.push({'name': 'silly bad guy', 'hp': 20, "attack": 5, 'position':{'x': j, 'y': x}});
+                        }
+                    }
+                }
+        }
+    })
+}
+
+//=====================Helpers==================
+
+function configStrings(){
+    String.prototype.replaceAt = function(index, replacement) {
+        console.log("start");
+        let temp = this.slice(0, index) + replacement + this.slice(index + replacement.length);
+        return temp
+    }
+}
