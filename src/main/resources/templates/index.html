@@ -19,15 +19,20 @@
 
     <div class="login-div">
     <h2>Login</h2>
-    <form action="/login" method="POST">
-        <label for="username">Username</label>
-        <input id="username"  type="username" name="Username">
-
-        <label for="password">Password</label>
-        <input id="password" type="password" name="Password">
-
-        <input class="btn-secondary" type="submit" value="login">
-    </form>
+        <div class="col-10 mx-auto col-lg-5">
+            <form class="p-5 border rounded-3 bg-light" action="/login" method="post">
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="input-username" type="text" name="username" required>
+                    <label class="floatingInput" for="input-username">username</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input class="form-control" id="input-password" type="password" name="password" required>
+                    <label class="floatingInput" for="input-password">password</label>
+                </div>
+                <input class="w-100 btn btn-lg btn-primary" type="submit" value="login">
+                <div >Don't have an account yet? <a class="col-lg-3" href="/signup">sign up</a></div>
+            </form>
+        </div>
     </div>
     </div>
 </main>
