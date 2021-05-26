@@ -3,7 +3,6 @@ package com.f0rgiv.lethani.controllers;
 import com.f0rgiv.lethani.models.*;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
@@ -17,7 +16,7 @@ public class GameController {
 
     @MessageMapping("/gameLogic/1")
     @SendTo("/game/zone/1")
-    public List<Player> playerResponse(Principal principal, Player position) throws Exception {
+    public List<Player> playerResponse(Principal principal, Player position) {
         System.out.println(position);
         Position position1 = position.getPosition();
 
