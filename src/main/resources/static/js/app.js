@@ -13,12 +13,8 @@ function setUp() {
     setPlayerStats();
     createListeners();
     updateXp(3);
-    setTimeout(() => {serverMessagePlayerJoin();}, 1000);
+    setTimeout(() => { serverMessagePlayerJoin(); }, 1000);
 }
-
-
-
-
 
 //=====================setup=====================
 
@@ -69,14 +65,24 @@ function configSockets() {
     });
 }
 
-function setPlayerStats(){
-    player  = {'position':{'x': 10, 'y': 13}, 'hp': 1, 'attack': 1, 'modifiers':{'attack': 1, 'defence': 1} };//todo
+function setPlayerStats() {
+    const hp = $("#hp").text() * $("#classHp").text();
+    player = {
+        'position': { 'x': 10, 'y': 13 },
+        'hp': hp,
+        'currentHp': hp,
+        'attack': 1,
+        'modifiers': {
+            'attack': $("#classAttack").text(),
+            'defence': 1
+        }
+    };
 };
 
 //=====================messaging=====================
 
 function disconnectMessageSocket() {
-    if(stompClient !== null) {
+    if (stompClient !== null) {
         stompClient.disconnect();
     }
     setConnected = false;
@@ -85,7 +91,7 @@ function disconnectMessageSocket() {
 
 function receiveMessage(message) {
     var userName = message.substr(0, message.indexOf(' '));
-    var text = message.substr(message.indexOf(' ') +1);
+    var text = message.substr(message.indexOf(' ') + 1);
     $("#messageTable").append("<p><span class='userNameText'>" + userName + " " + "</span><span class='textMessage'>" + text + "</span></p>");
 }
 
@@ -94,7 +100,7 @@ function sendMessage() {
     var clearElement = document.getElementsByName('messageForm')[0];
     clearElement.reset();
     console.log(message)
-    stompClient.send("/app/userTexts", {}, JSON.stringify({'message': message}));
+    stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
 }
 
 $(function () {
@@ -108,7 +114,7 @@ function serverMessagePlayerJoin() {
     var username = $("#username").text();
     console.log(username)
     var message = `[SERVER]: ${username} has joined!`
-    stompClient.send("/app/userTexts", {}, JSON.stringify({'message': message}));
+    stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
 }
 
 
@@ -132,27 +138,27 @@ function receiveGameUpdate(newPlayerStates) {
     updateBoard(boardState);
 }
 
-function updateBoard(board){
+function updateBoard(board) {
     $("#gameBoardContainer").empty();
-    for(let i = 0; i < board.length; i++) {
+    for (let i = 0; i < board.length; i++) {
         $("#gameBoardContainer").append("<p class='boardString'>" + board[i] + "</p>");
     }
 }
 
-function moveUp(){
-    handleMove({'x': player.position.x, 'y': player.position.y -1});
+function moveUp() {
+    handleMove({ 'x': player.position.x, 'y': player.position.y - 1 });
 }
 
-function moveDown(){
-    handleMove({'x': player.position.x, 'y': player.position.y +1});
+function moveDown() {
+    handleMove({ 'x': player.position.x, 'y': player.position.y + 1 });
 }
 
-function moveLeft(){
-    handleMove({'x': player.position.x -1, 'y': player.position.y});
+function moveLeft() {
+    handleMove({ 'x': player.position.x - 1, 'y': player.position.y });
 }
 
-function moveRight(){
-    handleMove({'x': player.position.x +1, 'y': player.position.y});
+function moveRight() {
+    handleMove({ 'x': player.position.x + 1, 'y': player.position.y });
 }
 
 function handleMove(to) {
@@ -178,7 +184,7 @@ function handleMove(to) {
     console.log(player.position);
     updateBoard(boardState);
     console.log(player.position);
-    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({'position': player.position}));
+    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({ 'position': player.position }));
 }
 
 function recievePlayerPositionUpdate(location) {
@@ -202,21 +208,21 @@ function attack(to) { //todo
     mob.hp = mob.hp - damageDealt;
     if (mob.hp > 1) {
         //remove the mob
-        for( var i = 0; i < mobs.length; i++){ 
-            if ( mobs[i] === mob) { 
-                mobs.splice(i, 1); 
+        for (var i = 0; i < mobs.length; i++) {
+            if (mobs[i] === mob) {
+                mobs.splice(i, 1);
             }
         }
         boardState[to.y].replaceAt([to.x], '.');
         return;
-    } 
+    }
     //take damage
     player.hp = player.hp - damageTaken;
-    if (player.hp > 1) {handleDeath() }
+    if (player.hp > 1) { handleDeath() }
 }
 
 function changeZones() { //stretch
-    
+
 }
 
 function handleDeath() {
@@ -234,7 +240,7 @@ function trigger_beep() {
 function getCurrentBoard() {
 
     $.ajax({
-        url:'\\assets\\boards\\zone1.txt',
+        url: '\\assets\\boards\\zone1.txt',
         success: (data) => {
             boardState = data.split(/\r\n|\r|\n/g);
             updateBoard(boardState);
@@ -244,13 +250,13 @@ function getCurrentBoard() {
             });
             // boardState.forEach(str => str.replace('@', '.'));
             for (let i = 0; i < boardState.length; i++) {
-                    for (let j = 0; j < boardState[0].length; j++) {
-                        let char = boardState[i][j];
-                        if (char = '&') {
-                            mobs.push({'name': 'silly bad guy', 'hp': 20, "attack": 5, 'position':{'x': j, 'y': x}});
-                        }
+                for (let j = 0; j < boardState[0].length; j++) {
+                    let char = boardState[i][j];
+                    if (char = '&') {
+                        mobs.push({ 'name': 'silly bad guy', 'hp': 20, "attack": 5, 'position': { 'x': j, 'y': x } });
                     }
                 }
+            }
         }
     })
 
@@ -258,14 +264,14 @@ function getCurrentBoard() {
 
 //=====================Helpers==================
 
-function configStrings(){
-    String.prototype.replaceAt = function(index, replacement) {
+function configStrings() {
+    String.prototype.replaceAt = function (index, replacement) {
         let temp = this.slice(0, index) + replacement + this.slice(index + replacement.length);
         return temp
     }
 }
 
-function updateXp(xp){
+function updateXp(xp) {
     $.ajax({
         url: `http://localhost:8080/updatexp/${xp}`,
         type: "POST",
