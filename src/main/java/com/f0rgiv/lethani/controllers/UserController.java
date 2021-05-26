@@ -114,9 +114,12 @@ public class UserController {
     @GetMapping("/leaderboard")
     public String addProfileInformationToLeaderBoard(Model model) {
         List<AppUser> appUsers = appUserRepository.findAll();
+        System.out.println("appUsers: " + appUsers.size());
         List<HighScore> highScores = new ArrayList<>();
         for (AppUser user : appUsers){
+//            System.out.println("user: " + user.getCharacter());
             highScores.add(new HighScore(user.getUsername(), user.getCharacter().getCharacterClass().getName(), user.getCharacter().getXp()));
+
         }
         model.addAttribute("highScores", highScores);
         return "leader-board";
