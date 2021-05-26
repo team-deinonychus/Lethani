@@ -81,6 +81,7 @@ function setPlayerStats() {
             'defence': 1
         }
     };
+    loadHp(hp);
 };
 
 //=====================messaging=====================
