@@ -6,6 +6,7 @@ window.addEventListener("load", setUp());
 window.addEventListener('beforeunload', disconnectMessageSocket)
 
 function setUp() {
+    configStrings();
     configSockets();
     getCurrentBoard();
     setPlayerStats();
@@ -17,21 +18,26 @@ function setUp() {
 
 function createListeners() {
     let testArea = document
-    testArea.addEventListener('keypress', (e) => {
+    testArea.addEventListener('keydown', (e) => {
         console.log(e.key);
         switch (e.key) {
             case 'w': //up
+                console.log("moving up")
                 trigger_beep();
                 moveUp();
+                break;
             case 's': //down
                 trigger_beep();
                 moveDown();
+                break;
             case 'a': //left
                 trigger_beep();
                 moveLeft();
+                break;
             case 'd': //right
                 trigger_beep();
                 moveRight();
+                break;
             default:
                 break;
         }
@@ -58,7 +64,7 @@ function configSockets() {
 }
 
 function setPlayerStats(){
-    player = {'position':{'x': 0, 'y': 0}, 'hp': 1, 'attack': 1, 'modifiers':{'attack': 1, 'defence': 1} }//todo
+    player  = {'position':{'x': 10, 'y': 13}, 'hp': 1, 'attack': 1, 'modifiers':{'attack': 1, 'defence': 1} };//todo
 };
 
 //=====================messaging=====================
@@ -96,34 +102,35 @@ $(function () {
 
 var boardState = [];
 var players = []; //player {username: jimbob, x: 0, y: 0}
-var player = {'position':{'x': 0, 'y': 0}, 'hp': 1, 'attack': 1, 'modifiers':{'attack': 1, 'defence': 1} };
+var player;
 var mobs = []; //mob {name: theirName, hp: 20, attack: 5, position{x: 0, y: 0}}
 
 function receiveGameUpdate(newBoardState, newPlayerStates) {
-    newPlayerStates.forEach(player => {
+    newPlayerStates.forEach(otherPlayer => {
         var username = $("#username").val();
-        if (player.userName !== username) {
-            boardState[player.y][player.x] = '0';    
+        if (otherPlayer.userName !== username) {
+            boardState[otherPlayer.y].replaceAt([otherPlayer.x], "0");
         }
     });
-    boardState[playerPosition.y][playerPosition.x] = '@'
+    boardState[player.position.y].replaceAt([player.position.x], "0");
     updateBoard(boardState);
 }
 
 function updateBoard(board){
-    console.log("asdg")
+    console.log("updating board")
+    $("#gameBoardContainer").empty();
     for(let i = 0; i < board.length; i++) {
-        console.log(board[i])
         $("#gameBoardContainer").append("<p class='boardString'>" + board[i] + "</p>");
     }
 }
 
 function moveUp(){
-    handleMove({'x': player.position.x, 'y': player.position.y +1});
+    console.log("moving up")
+    handleMove({'x': player.position.x, 'y': player.position.y -1});
 }
 
 function moveDown(){
-    handleMove({'x': player.position.x, 'y': player.position.y -1});
+    handleMove({'x': player.position.x, 'y': player.position.y +1});
 }
 
 function moveLeft(){
@@ -135,28 +142,38 @@ function moveRight(){
 }
 
 function handleMove(to) {
-    const toChar = boardState[to.x][to.y]
+    console.log("entering handle move");
+    const toChar = boardState[to.y][to.x];
+    console.log(player.position);
     switch (toChar) {
         case '#':
+            console.log("ran into a wall");
             break;
         case '.':
-            move(player.position, to)
+            console.log("moving");
+            move(player.position, to);
+            break;
         case '&':
+            console.log("attacking");
             attack(to);
+            break;
         case 'edge of board and access to another zone':
             changeZones();
+            break;
         default:
             break;
     }
+    console.log(player.position);
     updateBoard(boardState);
-    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({'board': boardState, 'player': playerPosition}));
+//    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({'board': boardState, 'player': player}));
 }
 
 function move(from, to) {
-    playerPosition = to;
-    boardState[from.y][from.x] = ".";
-    boardState[to.y][to.x] = "@";
-    //checkForMobs(); //stretch
+    player.position = to;
+    console.log(boardState[from.y]);
+    boardState[from.y] = boardState[from.y].replaceAt(from.x, '.');
+    boardState[to.y] = boardState[to.y].replaceAt(to.x, '@');
+    console.log(boardState[from.y]);
 }
 
 //stretch timers and cool downs
@@ -175,7 +192,8 @@ function attack(to) { //todo
                 mobs.splice(i, 1); 
             }
         }
-        boardState[to.y][to.x] = ".";
+        boardState[to.y].replaceAt([to.x], '.');
+        // replaceAt(boardState[to.y], [to.x], ".");
         return;
     } 
     //take damage
@@ -218,5 +236,12 @@ function getCurrentBoard() {
     })
 }
 
+//=====================Helpers==================
 
-
+function configStrings(){
+    String.prototype.replaceAt = function(index, replacement) {
+        console.log("start");
+        let temp = this.slice(0, index) + replacement + this.slice(index + replacement.length);
+        return temp
+    }
+}
