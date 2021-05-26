@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.0'
+	id 'org.springframework.boot' version '2.4.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -11,22 +11,6 @@ sourceCompatibility = '11'
 repositories {
 	mavenCentral()
 }
-
-jar {
-	manifest {
-		attributes(
-				'Main-Class': 'com.f0rgiv.lethani.DemoApplication.java'
-		)
-	}
-}
-
-springBoot {
-	mainClassName = "com.f0rgiv.lethani.DemoApplication.java"
-}
-
-//bootRepackage {
-//	mainClass = 'DemoApplication.java'
-//}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
