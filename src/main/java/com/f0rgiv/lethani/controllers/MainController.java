@@ -1,10 +1,11 @@
 package com.f0rgiv.lethani.controllers;
 
+import com.f0rgiv.lethani.models.AppUser;
 import com.f0rgiv.lethani.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -27,4 +28,13 @@ public class MainController {
 
     @GetMapping("/leaderboard")
     public String getLeaderBoard(){ return "leader-board";}
+
+    @PostMapping("/updatexp/{xp}")
+    public void updateXp(@PathVariable String xp, Principal principal) {
+        int newXp = Integer.parseInt(xp);
+        AppUser UserChar = appUserRepository.findByUsername(principal.getName());
+        UserChar.getCharacter().setXp(newXp + UserChar.getCharacter().getXp());
+        appUserRepository.save(UserChar);
+        System.out.println(xp);
+    }
 }

@@ -1,5 +1,6 @@
 'use strict';
 
+// const axios = require('axios');
 var stompClient = null;
 
 window.addEventListener("load", setUp());
@@ -11,6 +12,7 @@ function setUp() {
     getCurrentBoard();
     setPlayerStats();
     createListeners();
+    updateXp(3);
     setTimeout(() => {serverMessagePlayerJoin();}, 1000);
 }
 
@@ -264,5 +266,14 @@ function configStrings(){
 }
 
 function updateXp(xp){
-    //send it up
+    $.ajax({
+        url: `http://localhost:8080/updatexp/${xp}`,
+        type: "POST",
+        success: function (result) {
+            console.log(result);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    })
 }

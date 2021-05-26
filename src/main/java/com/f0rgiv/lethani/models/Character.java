@@ -24,6 +24,12 @@ public class Character {
     public Character() {
     }
 
+    public Character(String name, AppUser appUser) {
+        this.name = name;
+        this.xp = 0;
+        this.hp = 50;
+    }
+
     public Character(String name, int xp, int hp, AppUser appUser, CharacterClass characterClass) {
         this.name = name;
         this.xp = xp;
@@ -38,6 +44,10 @@ public class Character {
         return id;
     }
 
+    public int getXp() { return xp; }
+
     //=====================Setters====================
 
+
+    public void setXp(int xp) { this.xp = xp; }
 }
