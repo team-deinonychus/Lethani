@@ -11,7 +11,6 @@ function setUp() {
     getCurrentBoard();
     setPlayerStats();
     createListeners();
-    keyPress();
 }
 
 //=====================setup=====================
@@ -58,7 +57,8 @@ function configSockets() {
 
         console.log("Connected to starting zone: " + frame);
         stompClient.subscribe('/game/zone/1', function (location) {
-            receiveMessage(JSON.parse(location.body).content);
+            console.log(location.body);
+            recievePlayerPositionUpdate(JSON.parse(location.body));
         });
     });
 }
@@ -80,7 +80,6 @@ function disconnectMessageSocket() {
 function receiveMessage(message) {
     var userName = message.substr(0, message.indexOf(' '));
     var text = message.substr(message.indexOf(' ') +1);
-    // message = `${userName} ${text}`;
     $("#messageTable").append("<p><span class='userNameText'>" + userName + " " + "</span><span class='textMessage'>" + text + "</span></p>");
 }
 
@@ -88,6 +87,7 @@ function sendMessage() {
     var message = $("#messageField").val();
     var clearElement = document.getElementsByName('messageForm')[0];
     clearElement.reset();
+    console.log(message)
     stompClient.send("/app/userTexts", {}, JSON.stringify({'message': message}));
 }
 
@@ -98,6 +98,11 @@ $(function () {
     })
 });
 
+// function serverMessage() {
+//     var username = $("#username").val();
+//     var message = `[SERVER] ${use}`
+// stompClient.send("/app/userTexts", {}, JSON.stringify({'message': message}));
+// }
 //=====================game=====================
 
 var boardState = [];
@@ -117,7 +122,6 @@ function receiveGameUpdate(newBoardState, newPlayerStates) {
 }
 
 function updateBoard(board){
-    console.log("updating board")
     $("#gameBoardContainer").empty();
     for(let i = 0; i < board.length; i++) {
         $("#gameBoardContainer").append("<p class='boardString'>" + board[i] + "</p>");
@@ -125,7 +129,6 @@ function updateBoard(board){
 }
 
 function moveUp(){
-    console.log("moving up")
     handleMove({'x': player.position.x, 'y': player.position.y -1});
 }
 
@@ -142,9 +145,7 @@ function moveRight(){
 }
 
 function handleMove(to) {
-    console.log("entering handle move");
     const toChar = boardState[to.y][to.x];
-    console.log(player.position);
     switch (toChar) {
         case '#':
             console.log("ran into a wall");
@@ -165,15 +166,18 @@ function handleMove(to) {
     }
     console.log(player.position);
     updateBoard(boardState);
-//    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({'board': boardState, 'player': player}));
+    console.log(player.position);
+    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({'position': player.position}));
+}
+
+function recievePlayerPositionUpdate(location) {
+    console.log(location)
 }
 
 function move(from, to) {
     player.position = to;
-    console.log(boardState[from.y]);
     boardState[from.y] = boardState[from.y].replaceAt(from.x, '.');
     boardState[to.y] = boardState[to.y].replaceAt(to.x, '@');
-    console.log(boardState[from.y]);
 }
 
 //stretch timers and cool downs
@@ -226,7 +230,7 @@ function getCurrentBoard() {
             updateBoard(boardState);
             for (let i = 0; i < boardState.length; i++) {
                     for (let j = 0; j < boardState[0].length; j++) {
-                        const char = boardState[i][j];
+                        let char = boardState[i][j];
                         if (char = '&') {
                             mobs.push({'name': 'silly bad guy', 'hp': 20, "attack": 5, 'position':{'x': j, 'y': x}});
                         }
@@ -234,13 +238,13 @@ function getCurrentBoard() {
                 }
         }
     })
+
 }
 
 //=====================Helpers==================
 
 function configStrings(){
     String.prototype.replaceAt = function(index, replacement) {
-        console.log("start");
         let temp = this.slice(0, index) + replacement + this.slice(index + replacement.length);
         return temp
     }
