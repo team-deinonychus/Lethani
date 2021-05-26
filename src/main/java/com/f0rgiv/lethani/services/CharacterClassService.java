@@ -24,4 +24,13 @@ public class CharacterClassService {
         }
         return classes;
     }
+
+    public CharacterClass findByName(String className) {
+        CharacterClass result = characterClassRepository.findByName(className);
+        if (result == null){
+            getAll();
+            result = characterClassRepository.findByName(className);
+        }
+        return result;
+    }
 }

@@ -70,7 +70,9 @@ public class Character {
         this.name = name;
     }
 
-
+    public void setCharacterClass(CharacterClass characterClass) {
+        this.characterClass = characterClass;
+    }
 
     public void setXp(int xp) { this.xp = xp; }
 }
