@@ -214,7 +214,7 @@ function move(from, to) {
 function attack(to) { //todo
     var mob = mobs.find(mob => (mob.position.x == to.x && mob.position.y == to.y))
     console.log('fighting:' + mob);
-    player.attack = Math.floor(player.xp / 500);
+    player.attack = Math.floor(player.xp / 500) + 1;
     const damageDealt = Math.floor(Math.random() * ((player.attack * 1.2) - (player.attack * .8)) + (player.attack * .8));
     const damageTaken = Math.floor(Math.random() * ((mob.attack * 1.2) - (mob.attack * .8)) + (mob.attack * .8));
     //deal damage
@@ -310,7 +310,7 @@ function updateXp(xp) {
     console.log();
     document.getElementById("xpScore").innerHTML = `XP: ${player.xp}`;
     $.ajax({
-        url: `http://localhost:8080/updatexp/${xp}`,
+        url: `/updatexp/${xp}`,
         type: "POST",
         success: function (result) {
             console.log(result);
