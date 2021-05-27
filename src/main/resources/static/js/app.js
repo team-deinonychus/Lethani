@@ -310,7 +310,7 @@ function updateXp(xp) {
     console.log();
     document.getElementById("xpScore").innerHTML = `XP: ${player.xp}`;
     $.ajax({
-        url: `http://localhost:8080/updatexp/${xp}`,
+        url: `/updatexp/${xp}`,
         type: "POST",
         success: function (result) {
             console.log(result);
