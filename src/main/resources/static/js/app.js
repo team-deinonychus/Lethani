@@ -2,17 +2,19 @@
 
 // const axios = require('axios');
 var stompClient = null;
+var zone = "1";
+let zoneSubscription;
+let msgSubscription;
 
 window.addEventListener("load", setUp());
 window.addEventListener('beforeunload', disconnectMessageSocket)
 
 function setUp() {
     configStrings();
-    configSockets();
-    getCurrentBoard();
+    configSocket(1);
+    getCurrentBoard(zone);
     setPlayerStats();
     createListeners();
-    
     setTimeout(() => { serverMessagePlayerJoin(); }, 1000);
 }
 
@@ -21,7 +23,7 @@ function setUp() {
 function createListeners() {
     let testArea = document
     testArea.addEventListener('keydown', (e) => {
-        if(player.isDead) {
+        if (player.isDead) {
             return;
         }
         console.log(e.key);
@@ -49,21 +51,21 @@ function createListeners() {
     });
 }
 
-function configSockets() {
+function configSocket(zone) {
     var socket = new SockJS('/lethani');
     stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) { createInitialSubscriptions(zone) });
+}
 
-    stompClient.connect({}, function (frame) {
+function createInitialSubscriptions(zone) {
+    console.log("Connected to Message Socket: " + stompClient.frame);
+    msgSubscription = stompClient.subscribe('/game/messages', function (message) {
+        receiveMessage(JSON.parse(message.body).content);
+    });
 
-        console.log("Connected to Message Socket: " + frame);
-        stompClient.subscribe('/game/messages', function (message) {
-            receiveMessage(JSON.parse(message.body).content);
-        });
-
-        console.log("Connected to starting zone: " + frame);
-        stompClient.subscribe('/game/zone/1', function (location) {
-            receiveGameUpdate(JSON.parse(location.body));
-        });
+    console.log("Connected to starting zone: " + stompClient.frame);
+    zoneSubscription = stompClient.subscribe(`/game/zone/${zone}`, function (location) {
+        receiveGameUpdate(JSON.parse(location.body));
     });
 }
 
@@ -81,7 +83,7 @@ function setPlayerStats() {
             'attack': $("#classAttack").text(),
             'defence': 1
         },
-        'isDead': false
+        'isDead': false,
     };
     loadHp(hp);
     player.xp = xp;
@@ -90,10 +92,12 @@ function setPlayerStats() {
 //=====================messaging=====================
 
 function disconnectMessageSocket() {
+    var username = $("#username").text();
+    var message = `[SERVER]:   ${username} has left!`
+    stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
     if (stompClient !== null) {
         stompClient.disconnect();
     }
-    setConnected = false;
     console.log("Disconnected from Socket");
 }
 
@@ -125,7 +129,6 @@ function serverMessagePlayerJoin() {
     stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
 }
 
-
 //=====================game=====================
 
 var currentMap = [];
@@ -147,6 +150,7 @@ function receiveGameUpdate(newPlayerStates) {
 }
 
 function updateBoard(board) {
+    boardState[player.position.y] = boardState[player.position.y].replaceAt(player.position.x, '@');
     $("#gameBoardContainer").empty();
     for (let i = 0; i < board.length; i++) {
         $("#gameBoardContainer").append("<p class='boardString'>" + board[i] + "</p>");
@@ -183,7 +187,7 @@ function handleMove(to) {
             console.log("attacking");
             attack(to);
             break;
-        case 'edge of board and access to another zone':
+        case 'X':
             changeZones();
             break;
         default:
@@ -192,7 +196,7 @@ function handleMove(to) {
     console.log(player.position);
     updateBoard(boardState);
     console.log(player.position);
-    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({ 'position': player.position }));
+    stompClient.send(`/app/gameLogic/${zone}`, {}, JSON.stringify({ 'position': player.position }));
 }
 
 function recievePlayerPositionUpdate(location) {
@@ -232,10 +236,31 @@ function attack(to) { //todo
     }
     //take damage
     updateHealth(-damageTaken);
+
+    //populate mob hp bar
+
 }
 
 function changeZones() { //stretch
+    //unsubscribe from old subscription
+    zoneSubscription.unsubscribe(`/game/zone/1`);
 
+    //change zones 
+    if (player.position.y < 2) {
+        zone++;
+        player.position.y = 16;
+    } else {
+        zone--;
+        player.position.y = 1;
+    }
+
+    //subscribe to new zone and update board.
+    zoneSubscription = stompClient.subscribe(`/game/zone/${zone}`, function (location) {
+        receiveGameUpdate(JSON.parse(location.body));
+    });
+
+    //update the board
+    getCurrentBoard(zone);
 }
 
 function trigger_beep() {
@@ -243,24 +268,21 @@ function trigger_beep() {
     sound.play();
 }
 
-function getCurrentBoard() {
+function getCurrentBoard(zone) {
 
     $.ajax({
-        url: '\\assets\\boards\\zone1.txt',
+        url: `\\assets\\boards\\zone${zone}.txt`,
         success: (data) => {
             boardState = data.split(/\r\n|\r|\n/g);
-            updateBoard(boardState);
             currentMap = boardState.map((x) => x);
-            boardState.forEach(str => {
-                str.replace('@', '.')
-            });
-            // boardState.forEach(str => str.replace('@', '.'));
+            updateBoard(boardState);
             populateMobs();
         }
     })
 }
 
 function populateMobs() {
+    mobs = [];
     for (let i = 0; i < boardState.length; i++) {
         for (let j = 0; j < boardState[0].length; j++) {
             let char = boardState[i][j];
@@ -308,10 +330,10 @@ function loadHp(hp) {
 
 function updateHealth(hp) {
     player.currentHp += hp;
-    if(player.currentHp > player.hp) {
+    if (player.currentHp > player.hp) {
         player.currentHp = player.hp;
     }
-    if(player.currentHp < 1) {
+    if (player.currentHp < 1) {
         updateXp(-100);
         player.isDead = true;
         var username = $("#username").text();
@@ -326,11 +348,15 @@ function updateHealth(hp) {
     document.getElementById("pBar").setAttribute("value", player.currentHp);
 }
 
+function updateMobHp(mob){
+    document.getElementById("mobHpBar").setAttribute("value", mob.hp);
+}
+
 $(".deathDiv").hide();
 $("#deathNote").hide();
 $("#deathButton").hide();
 
-$("#deathButton").click(function() {
+$("#deathButton").click(function () {
     $("#pBar").remove();
     setPlayerStats();
     player.isDead = false;
