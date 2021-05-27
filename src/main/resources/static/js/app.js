@@ -300,9 +300,26 @@ function loadHp(hp) {
 }
 
 function updateHealth(hp) {
-
-    var currentHp = document.getElementById("pBar").getAttribute("value");
-    var newHp = parseInt(hp) + parseInt(currentHp);
-    player.currentHp = newHp;
-    document.getElementById("pBar").setAttribute("value", newHp.toString());
+    player.currentHp += hp;
+    if(player.currentHp > player.hp) {
+        player.currentHp = player.hp;
+    }
+    if(player.currentHp < 1) {
+        $(".gameDiv").hide();
+        $("#deathNote").show();
+        $("#deathButton").show();
+    }
+    document.getElementById("pBar").setAttribute("value", player.currentHp);
 }
+
+$("#deathNote").hide();
+$("#deathButton").hide();
+
+$("#deathButton").click(function() {
+    console.log("Adgergawerghaergaerghae")
+    setPlayerStats();
+    $(".gameDiv").show();
+    $("#deathNote").hide();
+    $("#deathButton").hide();
+    updateHealth(player.hp);
+});
