@@ -12,7 +12,7 @@ function setUp() {
     getCurrentBoard();
     setPlayerStats();
     createListeners();
-    updateXp(3);
+    
     setTimeout(() => { serverMessagePlayerJoin(); }, 1000);
 }
 
@@ -21,6 +21,9 @@ function setUp() {
 function createListeners() {
     let testArea = document
     testArea.addEventListener('keydown', (e) => {
+        // if(player.isDead) {
+        //     break;
+        // }
         console.log(e.key);
         switch (e.key) {
             case 'w': //up
@@ -66,17 +69,22 @@ function configSockets() {
 
 function setPlayerStats() {
     const hp = $("#hp").text() * $("#classHp").text();
+    const xp = parseInt($("#xp").text());
+
     player = {
         'position': { 'x': 10, 'y': 13 },
         'hp': hp,
+        'xp': 1,
         'currentHp': hp,
         'attack': 1,
         'modifiers': {
             'attack': $("#classAttack").text(),
             'defence': 1
-        }
+        },
+        // 'isDead': false
     };
     loadHp(hp);
+    player.xp = xp;
 };
 
 //=====================messaging=====================
@@ -92,7 +100,7 @@ function disconnectMessageSocket() {
 function receiveMessage(message) {
     var userName = message.substr(0, message.indexOf(' '));
     var text = message.substr(message.indexOf(' ') + 1);
-    $("#messageTable").append("<p><span class='userNameText'>" + userName + " " + "</span><span class='textMessage'>" + text + "</span></p>");
+    $("#messageTable").append("<div class='textMessageDiv'><div class='nameDiv'><p class='pTagMessage'><span class='userNameText'>" + `${userName} ` + "</span></p></div><div class='messageTextDiv'><p class='textptag'><span class='textMessage'>" + text + "</span></p></div></div>");
 }
 
 function sendMessage() {
@@ -113,7 +121,7 @@ $(function () {
 function serverMessagePlayerJoin() {
     var username = $("#username").text();
     console.log(username)
-    var message = `[SERVER]: ${username} has joined!`
+    var message = `[SERVER]:   ${username} has joined!`
     stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
 }
 
@@ -206,8 +214,13 @@ function attack(to) { //todo
     const damageTaken = Math.floor(Math.random() * ((mob.attack * 1.2) - (mob.attack * .8)) + (mob.attack * .8));
     //deal damage
     mob.hp = mob.hp - damageDealt;
+    updateXp(5);
     if (mob.hp < 1) {
         //remove the mob
+        updateXp(25);
+        var username = $("#username").text();
+        var message = `[SERVER]:   ${username} kicked that dudes Ass!`
+        stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
         for (var i = 0; i < mobs.length; i++) {
             if (mobs[i] === mob) {
                 mobs.splice(i, 1);
@@ -218,19 +231,10 @@ function attack(to) { //todo
     }
     //take damage
     updateHealth(-damageTaken);
-    if (player.hp > 1) { handleDeath() }
 }
 
 function changeZones() { //stretch
 
-}
-
-function handleDeath() {
-    //show game over
-
-    //remove player from game map
-
-    //stretch replace player on map with bones or something.
 }
 
 function trigger_beep() {
@@ -276,7 +280,8 @@ function configStrings() {
 
 function updateXp(xp) {
     player.xp += xp;
-
+    console.log();
+    document.getElementById("xpScore").innerHTML = player.xp;
     $.ajax({
         url: `http://localhost:8080/updatexp/${xp}`,
         type: "POST",
@@ -305,6 +310,11 @@ function updateHealth(hp) {
         player.currentHp = player.hp;
     }
     if(player.currentHp < 1) {
+        updateXp(-100);
+        // player.isDead = true;
+        var username = $("#username").text();
+        var message = `[SERVER]:   ${username} clearly sucks at this game! Get gooder!`
+        stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
         $(".gameDiv").hide();
         $("#deathNote").show();
         $("#deathButton").show();
@@ -316,8 +326,8 @@ $("#deathNote").hide();
 $("#deathButton").hide();
 
 $("#deathButton").click(function() {
-    console.log("Adgergawerghaergaerghae")
     setPlayerStats();
+    // player.isDead = false;
     $(".gameDiv").show();
     $("#deathNote").hide();
     $("#deathButton").hide();

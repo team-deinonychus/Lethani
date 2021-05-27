@@ -183,6 +183,103 @@
     width: 800px;
 }
 
+/* Play Page */
+
+/* * {
+    border: red;
+    border-width: 1px;
+    border-style: dotted;
+} */
+
+body {
+    justify-content: center;
+}
+
+.bodyDiv {
+    width: auto;
+    height: auto;
+    justify-content: center;
+    display: grid;
+}
+
+#main {
+    display: flex;
+    width: auto;
+    height: 1200px;
+    padding-top: 100px;
+}
+
+#place {
+    display: flex;
+    width: 75%;
+    height: auto;
+}
+
 .progress {
     max-width: 250px;
 }
+
+#messageTable {
+    height: 75%;
+    overflow: scroll;
+    overflow-x: hidden;
+    background-color: cyan;
+    width: 500px;
+}
+
+.pTagMessage {
+    overflow-wrap: break-word;
+}
+
+.textMessageDiv {
+    display: flex;
+    height: 25px;
+}
+
+.nameDiv {
+    display: flex;
+    padding-right: 4px;
+}
+
+.messageTextDiv {
+    overflow-wrap: break-word;
+    display: flex;
+    text-align: left;
+}
+
+.textptag {
+    display: flex;
+    justify-content: left;
+    overflow-wrap: break-word;
+}
+
+.userNameText {
+    font-family: sans-serif;
+    font-weight: 800;
+}
+
+.boardString {
+    font-family: monospace;
+    font-size: 60px;
+    font-weight: 600;
+    line-height: 40px;
+    text-align: center;
+}
+
+.messageDiv {
+    padding-left: 40px;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+#pBar {
+    vertical-align: baseline;
+    width: 400px;
+    height:55px;
+}
+
+.messStats {
+    display: flow-root;
+}
+
