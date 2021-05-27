@@ -1,9 +1,15 @@
 package com.f0rgiv.lethani.controllers;
 
 import com.f0rgiv.lethani.models.*;
+import com.f0rgiv.lethani.repositories.AppUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -11,6 +17,9 @@ import java.util.List;
 
 @Controller
 public class GameController {
+
+    @Autowired
+    AppUserRepository appUserRepository;
 
     ArrayList<Player> playerList1 = new ArrayList<>();
     ArrayList<Player> playerList2 = new ArrayList<>();
@@ -25,6 +34,16 @@ public class GameController {
     @SendTo("/game/zone/2")
     public List<Player> playerResponse2(Principal principal, Player position) {
         return updatePlayers(principal, position, playerList1, playerList2);
+    }
+
+    @PostMapping("/updatexp/{xp}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateXp(@PathVariable String xp, Principal principal) {
+        int newXp = Integer.parseInt(xp);
+        AppUser UserChar = appUserRepository.findByUsername(principal.getName());
+        UserChar.getCharacter().setXp(newXp + UserChar.getCharacter().getXp());
+        appUserRepository.save(UserChar);
+        System.out.println(xp);
     }
 
     private ArrayList<Player> updatePlayers(Principal principal, Player position,ArrayList<Player> listToUpdate,ArrayList<Player> listToRemove) {

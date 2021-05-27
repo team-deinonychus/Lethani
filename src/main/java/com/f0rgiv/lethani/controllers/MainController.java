@@ -25,13 +25,4 @@ public class MainController {
 
     @GetMapping("/play")
     public String getPlay() { return "play"; }
-
-    @PostMapping("/updatexp/{xp}")
-    public void updateXp(@PathVariable String xp, Principal principal) {
-        int newXp = Integer.parseInt(xp);
-        AppUser UserChar = appUserRepository.findByUsername(principal.getName());
-        UserChar.getCharacter().setXp(newXp + UserChar.getCharacter().getXp());
-        appUserRepository.save(UserChar);
-        System.out.println(xp);
-    }
 }
