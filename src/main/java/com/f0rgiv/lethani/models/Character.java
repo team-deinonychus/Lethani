@@ -1,5 +1,7 @@
 package com.f0rgiv.lethani.models;
 
+import com.f0rgiv.lethani.services.CharacterClassService;
+
 import javax.persistence.*;
 
 @Entity
@@ -62,6 +64,10 @@ public class Character {
     }
 
     public CharacterClass getCharacterClass() {
+        if (characterClass == null) {
+            CharacterClassService ccs = new CharacterClassService();
+            characterClass = ccs.getDefaultClass();
+        }
         return characterClass;
     }
 
