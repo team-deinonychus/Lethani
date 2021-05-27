@@ -214,10 +214,16 @@ function move(from, to) {
 function attack(to) { //todo
     var mob = mobs.find(mob => (mob.position.x == to.x && mob.position.y == to.y))
     console.log('fighting:' + mob);
+    player.attack = Math.floor(player.xp / 500);
     const damageDealt = Math.floor(Math.random() * ((player.attack * 1.2) - (player.attack * .8)) + (player.attack * .8));
     const damageTaken = Math.floor(Math.random() * ((mob.attack * 1.2) - (mob.attack * .8)) + (mob.attack * .8));
     //deal damage
     mob.hp = mob.hp - damageDealt;
+
+    //populate mob hp bar
+    updateMobHp(mob);
+
+    //earn xp
     updateXp(5);
     if (mob.hp < 1) {
         //remove the mob
@@ -236,9 +242,6 @@ function attack(to) { //todo
     }
     //take damage
     updateHealth(-damageTaken);
-
-    //populate mob hp bar
-
 }
 
 function changeZones() { //stretch
@@ -305,7 +308,7 @@ function configStrings() {
 function updateXp(xp) {
     player.xp += xp;
     console.log();
-    document.getElementById("xpScore").innerHTML = player.xp;
+    document.getElementById("xpScore").innerHTML = `XP: ${player.xp}`;
     $.ajax({
         url: `http://localhost:8080/updatexp/${xp}`,
         type: "POST",
@@ -326,6 +329,14 @@ function loadHp(hp) {
     g.setAttribute("max", `${hp}`);
     g.setAttribute("min", 0);
     document.getElementById("hpBar").appendChild(g);
+
+    //mob hp
+    var g = document.createElement("progress");
+    g.setAttribute("id", "mobPBar");
+    g.setAttribute("value", `${20}`);
+    g.setAttribute("max", `${20}`);
+    g.setAttribute("min", 0);
+    document.getElementById("mobHpBar").appendChild(g);
 }
 
 function updateHealth(hp) {
@@ -348,8 +359,8 @@ function updateHealth(hp) {
     document.getElementById("pBar").setAttribute("value", player.currentHp);
 }
 
-function updateMobHp(mob){
-    document.getElementById("mobHpBar").setAttribute("value", mob.hp);
+function updateMobHp(mob) {
+    document.getElementById("mobPBar").setAttribute("value", mob.hp);
 }
 
 $(".deathDiv").hide();
