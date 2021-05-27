@@ -59,3 +59,20 @@ div.nav-div {
     }
 }
 
+/* Play page */
+
+.play-ul {
+    list-style-type: none;
+    margin-top: 1rem;
+    border-style: solid;
+    border-radius: 10px;
+    border-width: thick;
+    position: relative;
+    font-size: 20px;
+    text-align: left;
+}
+
+.play-li {
+ font-size: 30px;
+ font-weight: 30px;
+}
