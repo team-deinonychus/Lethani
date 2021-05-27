@@ -278,6 +278,10 @@ body {
     height:55px;
 }
 
+#pBar::-webkit-progress-value {
+    background-color: red;
+}
+
 .messStats {
     display: flow-root;
 }
