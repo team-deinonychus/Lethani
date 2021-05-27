@@ -4,6 +4,7 @@ import com.f0rgiv.lethani.models.*;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -35,4 +36,27 @@ public class GameController {
         }
         return playerList;
     }
+
+    @MessageMapping("/gameLogic/2")
+    @SendTo("/game/zone/2")
+    public List<Player> playerResponse2(Principal principal, Player position) {
+        System.out.println(position);
+        Position position1 = position.getPosition();
+
+        //if the player is in list update location
+        boolean notFound = true;
+        for (Player player : playerList) {
+            if (player.getName().equals(principal.getName())){
+                player.setPosition(position1);
+                notFound = false;
+                break;
+            }
+        }
+        //else add player to list
+        if(notFound) {
+            playerList.add(new Player(position1, principal.getName()));
+        }
+        return playerList;
+    }
 }
+

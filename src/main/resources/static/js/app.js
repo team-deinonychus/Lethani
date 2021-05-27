@@ -2,14 +2,16 @@
 
 // const axios = require('axios');
 var stompClient = null;
+var zone = "1";
 
 window.addEventListener("load", setUp());
 window.addEventListener('beforeunload', disconnectMessageSocket)
 
 function setUp() {
     configStrings();
-    configSockets();
-    getCurrentBoard();
+    configSocket(1);
+    // configGameBoardSocket();
+    getCurrentBoard(zone);
     setPlayerStats();
     createListeners();
     
@@ -49,7 +51,7 @@ function createListeners() {
     });
 }
 
-function configSockets() {
+function configSocket(zone) {
     var socket = new SockJS('/lethani');
     stompClient = Stomp.over(socket);
 
@@ -61,11 +63,24 @@ function configSockets() {
         });
 
         console.log("Connected to starting zone: " + frame);
-        stompClient.subscribe('/game/zone/1', function (location) {
+        stompClient.subscribe(`/game/zone/${zone}`, function (location) {
             receiveGameUpdate(JSON.parse(location.body));
         });
     });
 }
+
+// function configGameBoardSocket() {
+//     var socket = new SockJS('/gameBoards');
+//     stompClient = Stomp.over(socket);
+
+//     stompClient.connect({}, function (frame) {
+
+//         console.log("Connected to starting zone: " + frame);
+//         stompClient.subscribe('/game/zone/1', function (location) {
+//             receiveGameUpdate(JSON.parse(location.body));
+//         });
+//     });
+// }
 
 function setPlayerStats() {
     const hp = $("#hp").text() * $("#classHp").text();
@@ -81,7 +96,7 @@ function setPlayerStats() {
             'attack': $("#classAttack").text(),
             'defence': 1
         },
-        'isDead': false
+        'isDead': false,
     };
     loadHp(hp);
     player.xp = xp;
@@ -93,7 +108,6 @@ function disconnectMessageSocket() {
     if (stompClient !== null) {
         stompClient.disconnect();
     }
-    setConnected = false;
     console.log("Disconnected from Socket");
 }
 
@@ -183,8 +197,14 @@ function handleMove(to) {
             console.log("attacking");
             attack(to);
             break;
-        case 'edge of board and access to another zone':
-            changeZones();
+        case 'X':
+            if(player.position.y < 2) {
+                zone++;
+                changeZones(zone);
+            } else {
+                zone--;
+                changeZones(zone);
+            }
             break;
         default:
             break;
@@ -234,8 +254,25 @@ function attack(to) { //todo
     updateHealth(-damageTaken);
 }
 
-function changeZones() { //stretch
+function changeZones(newZone) { //stretch
+    // stompClient.send(`/app/gameLogic/${zone}`) //Finish this command with player being "deleted"
+    disconnectMessageSocket();
+    var socket = new SockJS('/lethani');
+    stompClient = Stomp.over(socket);
 
+    stompClient.connect({}, function (frame) {
+
+        console.log("Connected to Message Socket: " + frame);
+        stompClient.subscribe('/game/messages', function (message) {
+            receiveMessage(JSON.parse(message.body).content);
+        });
+
+        console.log("Connected to starting zone: " + frame);
+        stompClient.subscribe(`/game/zone/${newZone}`, function (location) {
+            receiveGameUpdate(JSON.parse(location.body));
+        });
+    });
+    getCurrentBoard(zone);
 }
 
 function trigger_beep() {
@@ -243,10 +280,10 @@ function trigger_beep() {
     sound.play();
 }
 
-function getCurrentBoard() {
+function getCurrentBoard(zone) {
 
     $.ajax({
-        url: '\\assets\\boards\\zone1.txt',
+        url: `\\assets\\boards\\zone${zone}.txt`,
         success: (data) => {
             boardState = data.split(/\r\n|\r|\n/g);
             updateBoard(boardState);

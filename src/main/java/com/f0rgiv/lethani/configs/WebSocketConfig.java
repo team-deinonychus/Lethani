@@ -21,5 +21,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/lethani").withSockJS();
+//        registry.addEndpoint("/gameBoards").withSockJS();
     }
 }
