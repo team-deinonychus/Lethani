@@ -26,10 +26,11 @@ public class Character {
     public Character() {
     }
 
-    public Character(String name, AppUser appUser) {
+    public Character(String name, CharacterClass characterClass) {
         this.name = name;
         this.xp = 0;
         this.hp = 50;
+        this.characterClass = characterClass;
     }
 
     public Character(String name, int xp, int hp, AppUser appUser, CharacterClass characterClass) {

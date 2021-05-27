@@ -87,9 +87,6 @@ public class AppUser implements UserDetails {
     //=====================Setters====================
 
     public Character getCharacter() {
-        if (character == null) {
-            character = new Character(getUsername(), this);
-        }
         return character;
     }
 
