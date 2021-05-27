@@ -3,65 +3,77 @@
 
 <head th:replace="fragments/head :: head('Profile')"></head>
 
+<head>
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+
 <body>
     <header th:replace="./fragments/header :: header"></header>
     <main class="profile-main">
-        <h1 class="h1-profile">Profile</h1>
-        <img class="woods-img" src="/assets/dark-woods.jpeg" alt="Dragon flying above woods">
-
-        <div class="div-player">
-            <h2>Player Information:</h2>
-            <ul class="player-ul">
-                <li class="li-status">Status</li>
-                <li>---------------</li>
-                <li>Player XP:</li>
-                <li>Mobs killed:</li>
-            </ul>
+        <div id="profile-top">
+            <h1 class="h1-profile">Profile</h1>
+            <img class="woods-img" src="/assets/dark-woods.jpeg" alt="Dragon flying above woods">
         </div>
 
-        <div>
-            <img alt="profile picture" loading="lazy" th:src="${@appUserService.getProfilePicturePath(userPrincipal)}">
-            <h2>Choose a picture for your profile:</h2>
-            <form id="profile-form" class="p-3" action="/profile/image?_method=PUT" method="post"
-                enctype="multipart/form-data">
-                <fieldset class="mb-3">
-                    <label for="image-upload"></label>
-                    <input class="form-control form-control-sm" name="image" id="image-upload" type="file"
-                        accept="image/*"></input>
-                </fieldset>
-                <input type="submit" value="Change Profile Image"></input>
-            </form>
+        <div id="playerStats">
+            <div class="div-player">
+                <h2>Player Information:</h2>
+                <ul class="player-ul">
+                    <li class="li-status">Status</li>
+                    <li>---------------</li>
+                    <li>Player XP:</li>
+                    <li>Mobs killed:</li>
+                    <li th:text="'Class: ' + ${userPrincipal.character.characterClass.name}">Class: </li>
+                    <li><img th:src="'/assets/' + ${userPrincipal.character.characterClass.name} + '.png'"></li>
+                </ul>
+            </div>
+
+            <div>
+                <img id="profile-img" alt="profile picture" loading="lazy"
+                    th:src="${@appUserService.getProfilePicturePath(userPrincipal)}">
+                <h2>Choose a picture for your profile:</h2>
+                <form id="profile-form" class="p-3" action="/profile/image?_method=PUT" method="post"
+                    enctype="multipart/form-data">
+                    <fieldset class="mb-3">
+                        <label for="image-upload"></label>
+                        <input class="form-control form-control-sm" name="image" id="image-upload" type="file"
+                            accept="image/*"></input>
+                    </fieldset>
+                    <input type="submit" value="Change Profile Image"></input>
+                </form>
+            </div>
         </div>
-        <!--Add the ability to choose and add a class-->
         <div>
             <form id="profile-form" class="p-3" action="/profile/class?_method=PUT" method="post">
-            <h2>Class Information</h2>
-            <input type="submit" value="Reset and change your class"></input>
-            <div>
-                <p class="p-profile-pg"><strong>Warrior</strong></p>
-                <label>
-                    <input type="radio" name="characterClass" value="warrior" checked>
-                    <img src="/assets/warrior.png">
-                </label>  
-                <p> - Abilities: Move, Attack</p>
-            </div>
-            <div>
-                <p class="p-profile-pg"><strong>Wizard</strong></p>
-                <label>
-                    <input type="radio" name="characterClass" value="wizard" checked>
-                    <img src="/assets/wizard.png">
-                </label>  
-                <p> - Abilities: Move, Attack</p>
-            </div>
-            <div>
-                <p class="p-profile-pg"><strong>Assassin</strong></p>
-                <label>
-                    <input type="radio" name="characterClass" value="assassin" checked>
-                    <img src="/assets/assassin.png">
-                </label>  
-                <p> - Abilities: Move, Attack</p>
-            </div>
-        </form>
+                <h2>Class Information</h2>
+                <input type="submit" value="Reset and change your class"></input>
+                <div id="classes">
+                    <div>
+                        <p class="p-profile-pg"><strong>Warrior</strong></p>
+                        <label>
+                            <input type="radio" name="characterClass" value="warrior" checked>
+                            <img src="/assets/warrior.png">
+                        </label>
+                        <p> - Abilities: Move, Attack</p>
+                    </div>
+                    <div>
+                        <p class="p-profile-pg"><strong>Wizard</strong></p>
+                        <label>
+                            <input type="radio" name="characterClass" value="wizard" checked>
+                            <img src="/assets/wizard.png">
+                        </label>
+                        <p> - Abilities: Move, Attack</p>
+                    </div>
+                    <div>
+                        <p class="p-profile-pg"><strong>Assassin</strong></p>
+                        <label>
+                            <input type="radio" name="characterClass" value="assassin" checked>
+                            <img src="/assets/assassin.png">
+                        </label>
+                        <p> - Abilities: Move, Attack</p>
+                    </div>
+                </div>
+            </form>
         </div>
 
     </main>
