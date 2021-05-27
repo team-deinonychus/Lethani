@@ -29,7 +29,7 @@
             </div>
 
             <div>
-                <img alt="profile picture" loading="lazy"
+                <img id="profile-img" alt="profile picture" loading="lazy"
                     th:src="${@appUserService.getProfilePicturePath(userPrincipal)}">
                 <h2>Choose a picture for your profile:</h2>
                 <form id="profile-form" class="p-3" action="/profile/image?_method=PUT" method="post"
@@ -47,8 +47,8 @@
             <form id="profile-form" class="p-3" action="/profile/class?_method=PUT" method="post">
                 <h2>Class Information</h2>
                 <input type="submit" value="Reset and change your class"></input>
-                <div>
-                    <div id="classes">
+                <div id="classes">
+                    <div>
                         <p class="p-profile-pg"><strong>Warrior</strong></p>
                         <label>
                             <input type="radio" name="characterClass" value="warrior" checked>

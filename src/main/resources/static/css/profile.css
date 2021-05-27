@@ -8,3 +8,16 @@
 #profile-top {
     margin-bottom: 45px;
 }
+
+img {
+    height: 300px;
+}
+
+#profile-img {
+    height: 500px;
+}
+
+#classes {
+    display: flex;
+    justify-content: space-around;
+}
