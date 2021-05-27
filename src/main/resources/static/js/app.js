@@ -16,10 +16,6 @@ function setUp() {
     setTimeout(() => { serverMessagePlayerJoin(); }, 1000);
 }
 
-
-
-
-
 //=====================setup=====================
 
 function createListeners() {
@@ -49,7 +45,6 @@ function createListeners() {
         }
     });
 }
-
 
 function configSockets() {
     var socket = new SockJS('/lethani');
@@ -205,24 +200,24 @@ function move(from, to) {
 //stretch timers and cool downs
 
 function attack(to) { //todo
-    var mob = mobs.find(mod => (mob.position.x == to.x && mob.position.y == to.y))
+    var mob = mobs.find(mob => (mob.position.x == to.x && mob.position.y == to.y))
     console.log('fighting:' + mob);
     const damageDealt = Math.floor(Math.random() * ((player.attack * 1.2) - (player.attack * .8)) + (player.attack * .8));
     const damageTaken = Math.floor(Math.random() * ((mob.attack * 1.2) - (mob.attack * .8)) + (mob.attack * .8));
     //deal damage
     mob.hp = mob.hp - damageDealt;
-    if (mob.hp > 1) {
+    if (mob.hp < 1) {
         //remove the mob
         for (var i = 0; i < mobs.length; i++) {
             if (mobs[i] === mob) {
                 mobs.splice(i, 1);
             }
         }
-        boardState[to.y].replaceAt([to.x], '.');
+        currentMap[to.y] = currentMap[to.y].replaceAt(to.x, '.');
         return;
     }
     //take damage
-    player.hp = player.hp - damageTaken;
+    updateHealth(-damageTaken);
     if (player.hp > 1) { handleDeath() }
 }
 
@@ -254,17 +249,20 @@ function getCurrentBoard() {
                 str.replace('@', '.')
             });
             // boardState.forEach(str => str.replace('@', '.'));
-            for (let i = 0; i < boardState.length; i++) {
-                for (let j = 0; j < boardState[0].length; j++) {
-                    let char = boardState[i][j];
-                    if (char = '&') {
-                        mobs.push({ 'name': 'silly bad guy', 'hp': 20, "attack": 5, 'position': { 'x': j, 'y': x } });
-                    }
-                }
-            }
+            populateMobs();
         }
     })
+}
 
+function populateMobs() {
+    for (let i = 0; i < boardState.length; i++) {
+        for (let j = 0; j < boardState[0].length; j++) {
+            let char = boardState[i][j];
+            if (char == '&') {
+                mobs.push({ 'name': 'silly bad guy', 'hp': 20, "attack": 1, 'position': { 'x': j, 'y': i } });
+            }
+        }
+    }
 }
 
 //=====================Helpers==================
@@ -276,7 +274,7 @@ function configStrings() {
     }
 }
 
-function updateXp(xp){
+function updateXp(xp) {
     player.xp += xp;
 
     $.ajax({
