@@ -83,7 +83,7 @@ function setPlayerStats() {
             'attack': $("#classAttack").text(),
             'defence': 1
         },
-        'isDead': false,
+        'isDead': false
     };
     loadHp(hp);
     player.xp = xp;
@@ -355,6 +355,9 @@ function updateHealth(hp) {
         $(".deathDiv").show();
         $("#deathNote").show();
         $("#deathButton").show();
+        if($("#mobPBar")) {
+            $("#mobPBar").remove();
+        }
     }
     document.getElementById("pBar").setAttribute("value", player.currentHp);
 }
