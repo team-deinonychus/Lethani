@@ -33,4 +33,13 @@ public class CharacterClassService {
         }
         return result;
     }
+
+    public CharacterClass getDefaultClass(){
+        CharacterClass result = characterClassRepository.findByName("warrior");
+        if (result == null){
+            getAll();
+            result = characterClassRepository.findByName("warrior");
+        }
+        return result;
+    }
 }

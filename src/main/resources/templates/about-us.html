@@ -1,30 +1,40 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head th:replace="fragments/head :: head('About Us')"></head>
+
 <body>
-<header class="lethani-header" th:replace="fragments/header :: header"></header>
+    <header class="lethani-header" th:replace="fragments/header :: header"></header>
     <main>
         <div class="team">
             <h1>About Us</h1>
-        <div class="teamMember">
-            <div>
-                <img class="teamMemberPic" src="https://via.placeholder.com/150" alt="">
+            <div class="teamMember">
+                <div>
+                    <img class="teamMemberPic" src="https://via.placeholder.com/150" alt="">
+                </div>
+                <div class="teamMemberBio">
+                    <h2>Name</h2>
+                    <p>Temp</p>
+                </div>
             </div>
-            <div class="teamMemberBio">
-                <h2>Name</h2>
-                <p>Temp</p>
-            </div>
-        </div>
 
-        <div class="teamMember">
-            <div>
-                <img class="teamMemberPic" src="https://via.placeholder.com/150" alt="">
+            <div class="teamMember">
+                <div>
+                    <img class="teamMemberPic" src="/assets/james.jpg" alt="">
+                </div>
+                <div class="teamMemberBio">
+                    <h2>James Mansour</h2>
+                    <p>My name is James Mansour. I got thrown into IT directly out of high school and found myself in a
+                        place where I had to sink or swim and feeling like I had no idea what I was doing. Eventually I
+                        moved up to managing labs throughout Microsoft and providing premier level support within Azure.
+                        Working with Development and Test teams exposed me to the daily workflow and the challenges they
+                        face and I instantly knew I was hooked. Especially being one that loves working with others and
+                        being challenged to continually identify unique solutions to interesting problems. Fast forward
+                        to today and I can’t imagine doing anything but continuing to find, learn, develop and share new
+                        ways that technology can help make one's life simpler and enable us to connect more on a human
+                        level.</p>
+                </div>
             </div>
-            <div class="teamMemberBio">
-                <h2>Name</h2>
-                <p>Temp</p>
-            </div>
-        </div>
 
             <div class="teamMember">
                 <div>
@@ -32,17 +42,21 @@
                 </div>
                 <div class="teamMemberBio">
                     <h2>Amelia Waggoner</h2>
-                    <p>I am a Software programmer with a B.A. Japanese language & culture, & minor in international business.
+                    <p>I am a Software programmer with a B.A. Japanese language & culture, & minor in international
+                        business.
                         <br />Always had a interest in software programming & technology.
-                        <br />I picked this skill because it will get me into a career where I can constantly grow & learn.
+                        <br />I picked this skill because it will get me into a career where I can constantly grow &
+                        learn.
                         <br />I want to combine my B.A. & software programming skills,
                         <br />& work for a Japanese tech company or a company that is affiliated with Japan.
-                        <br />I have experience in customer service & time management.</p>
+                        <br />I have experience in customer service & time management.
+                    </p>
                 </div>
             </div>
 
         </div>
     </main>
-<footer th:replace="fragments/footer :: footer"></footer>
+    <footer th:replace="fragments/footer :: footer"></footer>
 </body>
+
 </html>
