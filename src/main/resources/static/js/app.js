@@ -21,9 +21,9 @@ function setUp() {
 function createListeners() {
     let testArea = document
     testArea.addEventListener('keydown', (e) => {
-        // if(player.isDead) {
-        //     break;
-        // }
+        if(player.isDead) {
+            return;
+        }
         console.log(e.key);
         switch (e.key) {
             case 'w': //up
@@ -81,7 +81,7 @@ function setPlayerStats() {
             'attack': $("#classAttack").text(),
             'defence': 1
         },
-        // 'isDead': false
+        'isDead': false
     };
     loadHp(hp);
     player.xp = xp;
@@ -313,29 +313,32 @@ function updateHealth(hp) {
     }
     if(player.currentHp < 1) {
         updateXp(-100);
-        // player.isDead = true;
+        player.isDead = true;
         var username = $("#username").text();
         var message = `[SERVER]:   ${username} clearly sucks at this game! Get gooder!`
         stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
-        $(".gameDiv").hide();
+        $("#gameBoardContainer").css("background-color", "red");
+        $(".boardString").css("opacity", ".2")
+        $(".deathDiv").show();
         $("#deathNote").show();
         $("#deathButton").show();
     }
     document.getElementById("pBar").setAttribute("value", player.currentHp);
 }
 
+$(".deathDiv").hide();
 $("#deathNote").hide();
 $("#deathButton").hide();
 
-// $("#deathButton").click(function() {
-//     setPlayerStats();
-//     // player.isDead = false;
-//     $(".gameDiv").show();
-//     $("#deathNote").hide();
-//     $("#deathButton").hide();
-//     updateHealth(player.hp);
-// });
+$("#deathButton").click(function() {
+    $("#pBar").remove();
+    setPlayerStats();
+    player.isDead = false;
+    $("#gameBoardContainer").css("background-color", "");
+    $(".boardString").css("opacity", "")
+    $(".deathDiv").hide();
+    $("#deathNote").hide();
+    $("#deathButton").hide();
+    updateHealth(player.hp);
+});
 
-
-// var snd = new Audio("rain.wav"); // buffers automatically when created
-// snd.play();

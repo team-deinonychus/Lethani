@@ -8,13 +8,13 @@
         <header th:replace="fragments/header :: header"></header>
         <main id="main">
             <div id="place">
-                <h1 id="deathNote">You have Died</h1>
-                <button id="deathButton">Respawn!</button>
                 <div class="gameDiv"></div>
-                <!-- <section> -->
+                    <div class="deathDiv">
+                        <h1 id="deathNote">You have Died</h1>
+                        <button id="deathButton">Respawn!</button>
+                    </div>
                     <div id="gameBoardContainer"></div>
-                <!-- </section> -->
-            </div>
+                </div>
             <div class="messStats">
                 <div class="stats">
                     <div class="hpDiv">
