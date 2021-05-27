@@ -12,31 +12,6 @@
  align-self: flex-start;
 }
 
-/* #screen{
-  text-align: center;
-  width: 100px;
-  height: 100px;
-} */
-
-/* .dragon {
-	position: absolute;
-	margin: 100px;
-	padding: 100px;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	background: #79b387;
-	touch-action: none;
-}
-
-svg {
-	position: absolute;
-	width:100%;
-	height: 100%;
-	background:#79b387;
-	cursor: pointer;
-	filter:sepia(20%);
-} */
 
 .img-castle-town{
     height: 190px;

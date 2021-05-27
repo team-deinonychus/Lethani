@@ -1,4 +1,5 @@
 "use strict";
+// Dragon Animation from https://codepen.io/ge1doot/pen/pobXmMa
 // Ported from flash
 // credits https://www.deviantart.com/gifhaas/art/Dragon-8681899 dragon by GifHaas on DeviantArt
 
