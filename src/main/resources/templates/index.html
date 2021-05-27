@@ -7,18 +7,59 @@
     <div class="home-container">
     <div class="welcome-div">
         <div class="img-div">
+
             <h1 class="h1-home">Welcome to Lethani!</h1>
             <img class="img-castle-town" src="/assets/castle-town.jpeg" alt="Castle Town">
         </div>
         <p>################################################</p>
+        <p>########....####.....Log in below!.....####....########</p>
         <p>########...#####...Play the game!...#####...########</p>
-        <p>####....Start playing the game by login below!....####</p>
-        <p>###If you don't have an account yet, sign up today!###</p>
+        <p>###....Don't have an account yet, sign up today!....###</p>
         <p>###########...................................###########</p>
     </div>
 
-    <div class="login-div">
-    <h2>Login</h2>
+                    <!--Fire Animation from https://codepen.io/yamanda/pen/RpNMaY-->
+        <div class="fire-animation">
+            <div class="fire">
+                <div class="fire-left">
+                    <div class="main-fire"></div>
+                    <div class="particle-fire"></div>
+                </div>
+                <div class="fire-main">
+                    <div class="main-fire"></div>
+                    <div class="particle-fire"></div>
+                </div>
+                <div class="fire-right">
+                    <div class="main-fire"></div>
+                    <div class="particle-fire"></div>
+                </div>
+                <div class="fire-bottom">
+                    <div class="main-fire"></div>
+                </div>
+            </div>
+        </div>
+
+            <div class="fire-animation">
+                <div class="fire-two">
+                    <div class="fire-left">
+                        <div class="main-fire"></div>
+                        <div class="particle-fire"></div>
+                    </div>
+                    <div class="fire-main">
+                        <div class="main-fire"></div>
+                        <div class="particle-fire"></div>
+                    </div>
+                    <div class="fire-right">
+                        <div class="main-fire"></div>
+                        <div class="particle-fire"></div>
+                    </div>
+                    <div class="fire-bottom">
+                        <div class="main-fire"></div>
+                    </div>
+                </div>
+            </div>
+
+                <h2>Log In</h2>
         <div class="col-10 mx-auto col-lg-5">
             <form class="p-5 border rounded-3 bg-light" action="/login" method="post">
                 <div class="form-floating mb-3">
@@ -29,12 +70,14 @@
                     <input class="form-control" id="input-password" type="password" name="password" required>
                     <label class="floatingInput" for="input-password">password</label>
                 </div>
-                <input class="w-100 btn btn-lg btn-primary" type="submit" value="login">
-                <div >Don't have an account yet? <a class="col-lg-3" href="/signup">sign up</a></div>
+                <input class="w-100 btn btn-lg btn-primary" type="submit" value="Log In">
+                <div >Don't have an account yet? <a class="col-lg-3" href="/signup">Sign Up</a></div>
             </form>
         </div>
+
     </div>
     </div>
+
 </main>
 <footer th:replace="fragments/footer :: footer"></footer>
 </body>
