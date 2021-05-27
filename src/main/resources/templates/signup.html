@@ -4,7 +4,50 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main class="text-center py-5">
-    <h1 class="h3 mb-3 fw-normal">Sign up</h1>
+
+    <!--Fire Animation from https://codepen.io/yamanda/pen/RpNMaY-->
+    <div class="fire-animation">
+        <div class="fire">
+            <div class="fire-left">
+                <div class="main-fire"></div>
+                <div class="particle-fire"></div>
+            </div>
+            <div class="fire-main">
+                <div class="main-fire"></div>
+                <div class="particle-fire"></div>
+            </div>
+            <div class="fire-right">
+                <div class="main-fire"></div>
+                <div class="particle-fire"></div>
+            </div>
+            <div class="fire-bottom">
+                <div class="main-fire"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fire-animation">
+        <div class="fire-two">
+            <div class="fire-left">
+                <div class="main-fire"></div>
+                <div class="particle-fire"></div>
+            </div>
+            <div class="fire-main">
+                <div class="main-fire"></div>
+                <div class="particle-fire"></div>
+            </div>
+            <div class="fire-right">
+                <div class="main-fire"></div>
+                <div class="particle-fire"></div>
+            </div>
+            <div class="fire-bottom">
+                <div class="main-fire"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <h1 class="h3 mb-3 fw-normal">Sign Up</h1>
     <div class="col-10 mx-auto col-lg-5">
         <form class="p-5 border rounded-3 bg-light" action="/signup" method="post">
             <div class="form-floating mb-3">
@@ -15,8 +58,8 @@
                 <input class="form-control" id="password" type="password" name="password" required>
                 <label class="floatingInput" for="password">password</label>
             </div>
-            <input class="w-100 btn btn-lg btn-secondary" type="submit" value="sign up">
-            <div>Already have an account? <a href="/login">log in</a></div>
+            <input class="w-100 btn btn-lg btn-secondary" type="submit" value="Sign Up">
+            <div>Already have an account? <a href="/login">Log In</a></div>
         </form>
     </div>
 
