@@ -3,6 +3,8 @@
 // const axios = require('axios');
 var stompClient = null;
 var zone = "1";
+let zoneSubscription;
+let msgSubscription;
 
 window.addEventListener("load", setUp());
 window.addEventListener('beforeunload', disconnectMessageSocket)
@@ -10,11 +12,9 @@ window.addEventListener('beforeunload', disconnectMessageSocket)
 function setUp() {
     configStrings();
     configSocket(1);
-    // configGameBoardSocket();
     getCurrentBoard(zone);
     setPlayerStats();
     createListeners();
-    
     setTimeout(() => { serverMessagePlayerJoin(); }, 1000);
 }
 
@@ -23,7 +23,7 @@ function setUp() {
 function createListeners() {
     let testArea = document
     testArea.addEventListener('keydown', (e) => {
-        if(player.isDead) {
+        if (player.isDead) {
             return;
         }
         console.log(e.key);
@@ -54,33 +54,20 @@ function createListeners() {
 function configSocket(zone) {
     var socket = new SockJS('/lethani');
     stompClient = Stomp.over(socket);
-
-    stompClient.connect({}, function (frame) {
-
-        console.log("Connected to Message Socket: " + frame);
-        stompClient.subscribe('/game/messages', function (message) {
-            receiveMessage(JSON.parse(message.body).content);
-        });
-
-        console.log("Connected to starting zone: " + frame);
-        stompClient.subscribe(`/game/zone/${zone}`, function (location) {
-            receiveGameUpdate(JSON.parse(location.body));
-        });
-    });
+    stompClient.connect({}, function (frame) { createInitialSubscriptions(zone) });
 }
 
-// function configGameBoardSocket() {
-//     var socket = new SockJS('/gameBoards');
-//     stompClient = Stomp.over(socket);
+function createInitialSubscriptions(zone) {
+    console.log("Connected to Message Socket: " + stompClient.frame);
+    msgSubscription = stompClient.subscribe('/game/messages', function (message) {
+        receiveMessage(JSON.parse(message.body).content);
+    });
 
-//     stompClient.connect({}, function (frame) {
-
-//         console.log("Connected to starting zone: " + frame);
-//         stompClient.subscribe('/game/zone/1', function (location) {
-//             receiveGameUpdate(JSON.parse(location.body));
-//         });
-//     });
-// }
+    console.log("Connected to starting zone: " + stompClient.frame);
+    zoneSubscription = stompClient.subscribe(`/game/zone/${zone}`, function (location) {
+        receiveGameUpdate(JSON.parse(location.body));
+    });
+}
 
 function setPlayerStats() {
     const hp = $("#hp").text() * $("#classHp").text();
@@ -105,6 +92,9 @@ function setPlayerStats() {
 //=====================messaging=====================
 
 function disconnectMessageSocket() {
+    var username = $("#username").text();
+    var message = `[SERVER]:   ${username} has left!`
+    stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
     if (stompClient !== null) {
         stompClient.disconnect();
     }
@@ -139,7 +129,6 @@ function serverMessagePlayerJoin() {
     stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
 }
 
-
 //=====================game=====================
 
 var currentMap = [];
@@ -161,6 +150,7 @@ function receiveGameUpdate(newPlayerStates) {
 }
 
 function updateBoard(board) {
+    boardState[player.position.y] = boardState[player.position.y].replaceAt(player.position.x, '@');
     $("#gameBoardContainer").empty();
     for (let i = 0; i < board.length; i++) {
         $("#gameBoardContainer").append("<p class='boardString'>" + board[i] + "</p>");
@@ -198,13 +188,7 @@ function handleMove(to) {
             attack(to);
             break;
         case 'X':
-            if(player.position.y < 2) {
-                zone++;
-                changeZones(zone);
-            } else {
-                zone--;
-                changeZones(zone);
-            }
+            changeZones();
             break;
         default:
             break;
@@ -212,7 +196,7 @@ function handleMove(to) {
     console.log(player.position);
     updateBoard(boardState);
     console.log(player.position);
-    stompClient.send("/app/gameLogic/1", {}, JSON.stringify({ 'position': player.position }));
+    stompClient.send(`/app/gameLogic/${zone}`, {}, JSON.stringify({ 'position': player.position }));
 }
 
 function recievePlayerPositionUpdate(location) {
@@ -252,26 +236,30 @@ function attack(to) { //todo
     }
     //take damage
     updateHealth(-damageTaken);
+
+    //populate mob hp bar
+
 }
 
-function changeZones(newZone) { //stretch
-    // stompClient.send(`/app/gameLogic/${zone}`) //Finish this command with player being "deleted"
-    disconnectMessageSocket();
-    var socket = new SockJS('/lethani');
-    stompClient = Stomp.over(socket);
+function changeZones() { //stretch
+    //unsubscribe from old subscription
+    zoneSubscription.unsubscribe(`/game/zone/1`);
 
-    stompClient.connect({}, function (frame) {
+    //change zones 
+    if (player.position.y < 2) {
+        zone++;
+        player.position.y = 16;
+    } else {
+        zone--;
+        player.position.y = 1;
+    }
 
-        console.log("Connected to Message Socket: " + frame);
-        stompClient.subscribe('/game/messages', function (message) {
-            receiveMessage(JSON.parse(message.body).content);
-        });
-
-        console.log("Connected to starting zone: " + frame);
-        stompClient.subscribe(`/game/zone/${newZone}`, function (location) {
-            receiveGameUpdate(JSON.parse(location.body));
-        });
+    //subscribe to new zone and update board.
+    zoneSubscription = stompClient.subscribe(`/game/zone/${zone}`, function (location) {
+        receiveGameUpdate(JSON.parse(location.body));
     });
+
+    //update the board
     getCurrentBoard(zone);
 }
 
@@ -286,18 +274,15 @@ function getCurrentBoard(zone) {
         url: `\\assets\\boards\\zone${zone}.txt`,
         success: (data) => {
             boardState = data.split(/\r\n|\r|\n/g);
-            updateBoard(boardState);
             currentMap = boardState.map((x) => x);
-            boardState.forEach(str => {
-                str.replace('@', '.')
-            });
-            // boardState.forEach(str => str.replace('@', '.'));
+            updateBoard(boardState);
             populateMobs();
         }
     })
 }
 
 function populateMobs() {
+    mobs = [];
     for (let i = 0; i < boardState.length; i++) {
         for (let j = 0; j < boardState[0].length; j++) {
             let char = boardState[i][j];
@@ -345,10 +330,10 @@ function loadHp(hp) {
 
 function updateHealth(hp) {
     player.currentHp += hp;
-    if(player.currentHp > player.hp) {
+    if (player.currentHp > player.hp) {
         player.currentHp = player.hp;
     }
-    if(player.currentHp < 1) {
+    if (player.currentHp < 1) {
         updateXp(-100);
         player.isDead = true;
         var username = $("#username").text();
@@ -363,11 +348,15 @@ function updateHealth(hp) {
     document.getElementById("pBar").setAttribute("value", player.currentHp);
 }
 
+function updateMobHp(mob){
+    document.getElementById("mobHpBar").setAttribute("value", mob.hp);
+}
+
 $(".deathDiv").hide();
 $("#deathNote").hide();
 $("#deathButton").hide();
 
-$("#deathButton").click(function() {
+$("#deathButton").click(function () {
     $("#pBar").remove();
     setPlayerStats();
     player.isDead = false;
