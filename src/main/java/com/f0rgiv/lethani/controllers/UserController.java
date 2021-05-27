@@ -117,9 +117,7 @@ public class UserController {
         System.out.println("appUsers: " + appUsers.size());
         List<HighScore> highScores = new ArrayList<>();
         for (AppUser user : appUsers){
-//            System.out.println("user: " + user.getCharacter());
-            highScores.add(new HighScore(user.getUsername(), user.getCharacter().getCharacterClass().getName(), user.getCharacter().getXp()));
-
+            highScores.add(new HighScore(user.getUsername(), user.getCharacter().getCharacterClass().getName(), user.getCharacter().getXp(), user));
         }
         model.addAttribute("highScores", highScores);
         return "leader-board";
