@@ -1,0 +1,10 @@
+#playerStats {
+    display: flex;
+    flex-flow: row-reverse;
+    justify-content: center;
+    justify-content: space-evenly;
+}
+
+#profile-top {
+    margin-bottom: 45px;
+}
