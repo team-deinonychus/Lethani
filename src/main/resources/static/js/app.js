@@ -80,10 +80,10 @@ function setPlayerStats() {
     const xp = parseInt($("#xp").text());
 
     player = {
-        'name': "",
+        'name': $("#username").text(),
         'position': { 'x': 10, 'y': 13 },
         'hp': hp,
-        'xp': 1,
+        'xp': xp,
         'currentHp': hp,
         'attack': 1,
         'modifiers': {
@@ -93,8 +93,6 @@ function setPlayerStats() {
         'isDead': false
     };
     loadHp(hp);
-    player.name = $("#username").text();
-    player.xp = xp;
 };
 
 //=====================messaging=====================
@@ -427,14 +425,15 @@ $("#deathNote").hide();
 $("#deathButton").hide();
 
 $("#deathButton").click(function () {
-    $("#pBar").remove();
-    setPlayerStats();
-    player.isDead = false;
+    // $("#pBar").remove();
     $("#gameBoardContainer").css("background-color", "");
     $(".boardString").css("opacity", "")
     $(".deathDiv").hide();
     $("#deathNote").hide();
     $("#deathButton").hide();
+    player.currentHp = player.hp;
+    player.isDead = false;
     updateHealth(player.hp);
+    spawnPlayer(true);
 });
 
