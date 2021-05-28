@@ -5,6 +5,7 @@ var stompClient = null;
 var zone = "1";
 let zoneSubscription;
 let msgSubscription;
+let dmgSubscription;
 
 window.addEventListener("load", setUp());
 window.addEventListener('beforeunload', disconnectMessageSocket)
@@ -68,7 +69,8 @@ function createInitialSubscriptions(zone) {
         receiveGameUpdate(JSON.parse(location.body));
     });
 
-    zoneSubscription = stompClient.subscribe(`/game/damage/${zone}`, function (result) {
+    console.log("Connected to dmg scket")
+    dmgSubscription = stompClient.subscribe(`/game/pvp`, function (result) {
         receivePVPUpdate(JSON.parse(result.body));
     });
 }
@@ -78,6 +80,7 @@ function setPlayerStats() {
     const xp = parseInt($("#xp").text());
 
     player = {
+        'name': "",
         'position': { 'x': 10, 'y': 13 },
         'hp': hp,
         'xp': 1,
@@ -90,6 +93,7 @@ function setPlayerStats() {
         'isDead': false
     };
     loadHp(hp);
+    player.name = $("#username").text();
     player.xp = xp;
 };
 
@@ -145,6 +149,7 @@ var mobs = [];
 //=====================game-draw=====================
 
 function receiveGameUpdate(newPlayerStates) {
+    players = newPlayerStates;
     boardState = currentMap.map((x) => x);
     newPlayerStates.forEach(otherPlayer => {
         var username = $("#username").text();
@@ -199,7 +204,7 @@ function handleMove(to) {
             changeZones();
             break;
         case '0':
-            handelPVP();
+            handelPVP(to);
             break;
         default:
             break;
@@ -301,12 +306,21 @@ function calculateDamage(mob) {
     return { damageDealt, damageTaken };
 }
 
-function handelPVP(damage, to) {
+function handelPVP(to) {
 
+    const { damageDealt, damageTaken } = calculateDamage({ 'attack': 3 })
+    const defender = players.find(defender => defender.position.y == to.y && defender.position.x == to.x);
+    console.log("Hit this guy =>>>  " + defender);
+    updateHealth(damageTaken);
+    var fight = { 'dmgGiven': damageDealt, 'defender': defender.name };
+    stompClient.send(`/app/pvp`, {}, JSON.stringify(fight));
 }
 
 function receivePVPUpdate(damageUpdate) {
-
+    console.log(damageUpdate);
+    if(damageUpdate.defender == player.name) {
+        updateHealth(damageUpdate.dmgGiven);
+    }
 }
 
 function trigger_beep() {
