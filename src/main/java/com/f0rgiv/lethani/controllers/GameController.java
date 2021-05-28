@@ -56,13 +56,13 @@ public class GameController {
     @MessageMapping("/gameLogic/4")
     @SendTo("/game/zone/4")
     public List<Player> playerResponse4(Principal principal, Player position) {
-        return updatePlayers(principal, position, 3);
+        return updatePlayers(principal, position, 4);
     }
 
     @MessageMapping("/gameLogic/5")
     @SendTo("/game/zone/5")
     public List<Player> playerResponse5(Principal principal, Player position) {
-        return updatePlayers(principal, position, 3);
+        return updatePlayers(principal, position, 5);
     }
 
     @MessageMapping("/pvp")
