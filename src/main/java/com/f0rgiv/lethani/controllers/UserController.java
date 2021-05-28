@@ -122,8 +122,8 @@ public class UserController {
             highScores.add(new HighScore(user.getUsername(), user.getCharacter().getCharacterClass().getName(), user.getCharacter().getXp(), user));
 
         }
-        Comparator<HighScore> compareByScore = (HighScore o1, HighScore o2) -> o1.getHighScore() < o2.getHighScore()? -1 : 1;
-        Collections.sort(highScores, compareByScore);
+        Comparator<HighScore> compareByScore = (HighScore o1, HighScore o2) -> o1.getHighScore() > o2.getHighScore()? -1 : 1;
+        highScores.sort(compareByScore);
         model.addAttribute("highScores", highScores);
         return "leader-board";
     }
