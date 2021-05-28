@@ -17,23 +17,40 @@ import java.util.List;
 
 @Controller
 public class GameController {
+    static int boardCount = 10;
 
     @Autowired
     AppUserRepository appUserRepository;
 
-    ArrayList<Player> playerList1 = new ArrayList<>();
-    ArrayList<Player> playerList2 = new ArrayList<>();
+    static List<ArrayList<Player>> boardPlayers = new ArrayList<>();
+    static {
+        for (int i = 0; i < boardCount; i++) {
+            boardPlayers.add(new ArrayList<>());
+        }
+    }
+
+    @MessageMapping("/gameLogic/0")
+    @SendTo("/game/zone/0")
+    public List<Player> playerResponse0(Principal principal, Player position) {
+        return updatePlayers(principal, position, 0);
+    }
 
     @MessageMapping("/gameLogic/1")
     @SendTo("/game/zone/1")
-    public List<Player> playerResponse(Principal principal, Player position) {
-        return updatePlayers(principal, position, playerList2, playerList1);
+    public List<Player> playerResponse1(Principal principal, Player position) {
+        return updatePlayers(principal, position, 1);
     }
 
     @MessageMapping("/gameLogic/2")
     @SendTo("/game/zone/2")
     public List<Player> playerResponse2(Principal principal, Player position) {
-        return updatePlayers(principal, position, playerList1, playerList2);
+        return updatePlayers(principal, position, 2);
+    }
+
+    @MessageMapping("/gameLogic/3")
+    @SendTo("/game/zone/3")
+    public List<Player> playerResponse3(Principal principal, Player position) {
+        return updatePlayers(principal, position, 3);
     }
 
     @PostMapping("/updatexp/{xp}")
@@ -46,14 +63,18 @@ public class GameController {
         System.out.println(xp);
     }
 
-    private ArrayList<Player> updatePlayers(Principal principal, Player position,ArrayList<Player> listToUpdate,ArrayList<Player> listToRemove) {
+    private ArrayList<Player> updatePlayers(Principal principal, Player position, int toZone) {
         Position position1 = position.getPosition();
+
+        //remove from old map
+        for (int i = 0; i < boardPlayers.size(); i++) {
+            if (i != toZone) boardPlayers.get(i).removeIf(oldPlayer -> oldPlayer.getName().equals(principal.getName()));
+        }
 
         //if the player is in list update location
         boolean notFound = true;
-        for (Player player : listToUpdate) {
+        for (Player player : boardPlayers.get(toZone)) {
             if (player.getName().equals(principal.getName())){
-                listToRemove.removeIf(oldPlayer -> oldPlayer.getName().equals(principal.getName()));
                 player.setPosition(position1);
                 notFound = false;
                 break;
@@ -61,9 +82,9 @@ public class GameController {
         }
         //else add player to list
         if(notFound) {
-            listToUpdate.add(new Player(position1, principal.getName()));
+            boardPlayers.get(toZone).add(new Player(position1, principal.getName()));
         }
-        return listToUpdate;
+        return boardPlayers.get(toZone);
     }
 }
 
