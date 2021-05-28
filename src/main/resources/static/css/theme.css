@@ -193,3 +193,30 @@
   animation-iteration-count: infinite;
   animation-fill-mode: both;
 }
+
+/* Dragon https://codepen.io/JD_Rocks/pen/eidHp */
+
+.dragon {
+  position: absolute;
+  top: 20%;
+  left: 46%;
+  width: 96px;
+  height: 64px;
+  margin-top: -20px;
+  margin-left: -20px;
+  animation: KAKAW 0.8s linear infinite;
+  overflow: hidden
+}
+
+.graphic {
+  background: url('http://i444.photobucket.com/albums/qq168/grandmadeb_rmvx/Dragoncrnagomi.png');
+  margin-top: -128px;
+  height: 256px;
+  display: block;
+  animation: run .5s steps(2) infinite;
+}
+
+@keyframes KAKAW {
+  50% { transform: translate3d(15px, 18px, 5px); }
+}
+

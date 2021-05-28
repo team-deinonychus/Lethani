@@ -97,23 +97,44 @@
     width: 1000px;
 }
 
+.users-leaders{
+    border-style: double;
+    border-color: #122415;
+    border-width: 10px;
+    background-color: rgb(12, 111, 24);
+    padding: 45px;
+    margin: 50px;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+
+#profile-img-two {
+    height: 150px;
+    width: 150px;
+}
+
+#class-img-two {
+    height: 150px;
+    width: 150px;
+    margin-left:50px;
+}
+
 .user-class-score {
+    font-size: 32px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-evenly;
+    align-content: flex-start;
     flex-direction: row;
-    flex-wrap: wrap;
-     justify-content: flex-start;
-     font-size: 20px;
-     border-style: double;
-     border-color: #122415;
-     border-width: 10px;
-     background-color: rgb(12, 111, 24);
-     padding: 5px;
-     margin: 50px;
-     margin-right: 300px;
-     margin-left: 300px;
 }
 
 .leader-ul {
     list-style-type: none;
+    height:150px;
+    width: 150px;
+    border-radius: 25%;
 }
 
 .p-leader {
@@ -121,11 +142,13 @@
 }
 
 .warrior-img{
+    float: left;
     height: 100px;
     width: 100px;
 }
 
 .wizard-img{
+    float: right;
     height: 100px;
     width: 100px;
 }
@@ -174,7 +197,7 @@
 
 .woods-img {
     margin-top: 2rem;
-    height: 130px;
+    height: 400px;
     width: 800px;
 }
 
