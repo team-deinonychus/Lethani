@@ -46,6 +46,8 @@ function createListeners() {
                 trigger_beep();
                 moveRight();
                 break;
+            case 'q': //potion
+                handlePotions();
             default:
                 break;
         }
@@ -80,21 +82,25 @@ function setPlayerStats() {
     const xp = parseInt($("#xp").text());
 
     player = {
-        'name': "",
+        'name': $("#username").text(),
         'position': { 'x': 10, 'y': 13 },
         'hp': hp,
-        'xp': 1,
+        'xp': xp,
         'currentHp': hp,
         'attack': 1,
         'modifiers': {
             'attack': $("#classAttack").text(),
             'defence': 1
         },
-        'isDead': false
+        'isDead': false,
+        'inventory': {
+            'potion': {
+                'incHp': 30,
+                'quantity': 3
+            }
+        }
     };
     loadHp(hp);
-    player.name = $("#username").text();
-    player.xp = xp;
 };
 
 //=====================messaging=====================
@@ -206,6 +212,9 @@ function handleMove(to) {
         case '0':
             handelPVP(to);
             break;
+        case 'P':
+            buyPotions();
+            break;
         default:
             break;
     }
@@ -220,12 +229,15 @@ function move(from, to) {
 }
 
 function changeZones() { //stretch
+    player.isDead = true;
     let movedUp = false;
     //unsubscribe from old subscription
     zoneSubscription.unsubscribe(`/game/zone/1`);
 
     //change zones 
-    if (player.position.y < 2) {
+    if(boardState[boardState.length-1].includes('X') && player.position.y == boardState.length-2){
+        zone--;
+    } else if (player.position.y < 2 || boardState[0].includes('X') == false) {
         movedUp = true;
         zone++;
     } else {
@@ -285,7 +297,7 @@ function attack(to) { //todo
         updateXp(25);
         // trigger_attack_sound();
         var username = $("#username").text();
-        var message = `[SERVER]:   ${username} kicked that dudes Ass!`
+        var message = `[SERVER]:   ${username} has slayn an enemy!`
         stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
         for (var i = 0; i < mobs.length; i++) {
             if (mobs[i] === mob) {
@@ -338,6 +350,7 @@ function getCurrentBoard(zone, moveUp = true) {
             spawnPlayer(moveUp);
             updateBoard(boardState);
             populateMobs();
+            player.isDead = false;
         }
     })
 }
@@ -404,7 +417,7 @@ function updateHealth(hp) {
         updateXp(-100);
         player.isDead = true;
         var username = $("#username").text();
-        var message = `[SERVER]:   ${username} clearly sucks at this game! Get gooder!`
+        var message = `[SERVER]:   Oh No!! ${username} has died!`
         stompClient.send("/app/userTexts", {}, JSON.stringify({ 'message': message }));
         $("#gameBoardContainer").css("background-color", "red");
         $(".boardString").css("opacity", ".2")
@@ -418,6 +431,15 @@ function updateHealth(hp) {
     document.getElementById("pBar").setAttribute("value", player.currentHp);
 }
 
+function handlePotions() {
+    updateHealth(player.inventory.potion.incHp);
+    player.inventory.potion.quantity--;
+}
+
+function buyPotions() {
+    player.inventory.potion.quantity = 3;
+}
+
 function updateMobHp(mob) {
     document.getElementById("mobPBar").setAttribute("value", mob.hp);
 }
@@ -427,14 +449,15 @@ $("#deathNote").hide();
 $("#deathButton").hide();
 
 $("#deathButton").click(function () {
-    $("#pBar").remove();
-    setPlayerStats();
-    player.isDead = false;
+    // $("#pBar").remove();
     $("#gameBoardContainer").css("background-color", "");
     $(".boardString").css("opacity", "")
     $(".deathDiv").hide();
     $("#deathNote").hide();
     $("#deathButton").hide();
+    player.currentHp = player.hp;
+    player.isDead = false;
     updateHealth(player.hp);
+    spawnPlayer(true);
 });
 
