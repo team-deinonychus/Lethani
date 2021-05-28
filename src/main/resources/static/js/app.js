@@ -216,16 +216,16 @@ function move(from, to) {
 }
 
 function changeZones() { //stretch
+    let movedUp = false;
     //unsubscribe from old subscription
     zoneSubscription.unsubscribe(`/game/zone/1`);
 
     //change zones 
     if (player.position.y < 2) {
+        movedUp = true;
         zone++;
-        player.position.y = 16;
     } else {
         zone--;
-        player.position.y = 1;
     }
 
     //subscribe to new zone and update board.
@@ -234,7 +234,33 @@ function changeZones() { //stretch
     });
 
     //update the board
-    getCurrentBoard(zone);
+    getCurrentBoard(zone, movedUp);
+}
+
+function spawnPlayer(movedUp) {
+    if (movedUp) {
+        for (let y = boardState.length - 1; y > 0; y--) {
+            const line = boardState[y];
+            let x = line.indexOf('X');
+            if (x > -1) {
+                if (y == boardState.length - 1) {
+                    player.position = { 'x': x, 'y': boardState.length - 2 };
+                } else {
+                    player.position = { 'x': x, 'y': y + 1 };
+                }
+                return;
+            }
+        }
+    } else {
+        for (let y = 0; y < boardState.length; y++) {
+            const line = boardState[y];
+            let x = line.indexOf('X');
+            if (x > -1) {
+                player.position = { 'x': x, 'y': y + 1 };
+                return;
+            }
+        }
+    }
 }
 
 //=====================game-damage=====================
@@ -276,11 +302,11 @@ function calculateDamage(mob) {
     return { damageDealt, damageTaken };
 }
 
-function handelPVP(damage, to){
+function handelPVP(damage, to) {
 
 }
 
-function receivePVPUpdate(damageUpdate){
+function receivePVPUpdate(damageUpdate) {
 
 }
 
@@ -291,13 +317,13 @@ function trigger_beep() {
 
 //=====================Helpers==================
 
-function getCurrentBoard(zone) {
-
+function getCurrentBoard(zone, moveUp = true) {
     $.ajax({
         url: `\\assets\\boards\\zone${zone}.txt`,
         success: (data) => {
             boardState = data.split(/\r\n|\r|\n/g);
             currentMap = boardState.map((x) => x);
+            spawnPlayer(moveUp);
             updateBoard(boardState);
             populateMobs();
         }
