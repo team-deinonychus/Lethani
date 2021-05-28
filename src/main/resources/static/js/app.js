@@ -209,6 +209,9 @@ function handleMove(to) {
         case 'X':
             changeZones();
             break;
+        case '$':
+            alert("We are closed. Please come back later.");
+            break;
         case '0':
             handelPVP(to);
             break;
@@ -329,7 +332,7 @@ function handelPVP(to) {
 
 function receivePVPUpdate(damageUpdate) {
     console.log(damageUpdate);
-    if(damageUpdate.defender == player.name) {
+    if (damageUpdate.defender == player.name) {
         updateHealth(-damageUpdate.dmgGiven);
     }
 }
