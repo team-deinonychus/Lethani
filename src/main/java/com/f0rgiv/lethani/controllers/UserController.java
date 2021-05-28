@@ -23,6 +23,8 @@ import javax.lang.model.element.Name;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -118,7 +120,10 @@ public class UserController {
         List<HighScore> highScores = new ArrayList<>();
         for (AppUser user : appUsers){
             highScores.add(new HighScore(user.getUsername(), user.getCharacter().getCharacterClass().getName(), user.getCharacter().getXp(), user));
+
         }
+        Comparator<HighScore> compareByScore = (HighScore o1, HighScore o2) -> o1.getHighScore() < o2.getHighScore()? -1 : 1;
+        Collections.sort(highScores, compareByScore);
         model.addAttribute("highScores", highScores);
         return "leader-board";
     }

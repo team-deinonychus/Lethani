@@ -14,14 +14,20 @@
 
             <div class="users-leaders">
                 <div class="user-class-score" th:each="highScore : ${highScores}">
-                    <ul class="leader-ul">
-                        <img id="profile-img" alt="profile picture" loading="lazy"
+                        <div>
+                        <img id="profile-img-two" alt="profile picture" loading="lazy"
                         th:src="${@appUserService.getProfilePicturePath(highScore.userPrincipal)}">
-                        <img th:src="'/assets/' + ${highScore.characterClass} + '.png'">
-                        <li th:text="${highScore.name}">Username </li>
-                        <li th:text="${highScore.characterClass}">Class</li>
-                        <li th:text="${highScore.highScore}">XP</li>
-                    </ul>
+                        </div>
+                        <div>
+                            <img id="class-img-two" th:src="'/assets/' + ${highScore.characterClass} + '.png'">
+                        </div>
+                        <div>
+                            <ul class="leader-ul">
+                            <li th:text="${highScore.name}">Username </li>
+                            <li th:text="${highScore.characterClass}">Class</li>
+                            <li th:text="${highScore.highScore}">XP</li>
+                            </ul>
+                        </div>
                 </div>
 
             </div>
