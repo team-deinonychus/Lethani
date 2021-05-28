@@ -71,7 +71,7 @@ function createInitialSubscriptions(zone) {
 
     console.log("Connected to dmg scket")
     dmgSubscription = stompClient.subscribe(`/game/pvp`, function (result) {
-        receivePVPUpdate(JSON.parse(result.body));
+        receivePVPUpdate(JSON.parse(result.body).fight);
     });
 }
 
@@ -307,11 +307,10 @@ function calculateDamage(mob) {
 }
 
 function handelPVP(to) {
-
     const { damageDealt, damageTaken } = calculateDamage({ 'attack': 3 })
     const defender = players.find(defender => defender.position.y == to.y && defender.position.x == to.x);
     console.log("Hit this guy =>>>  " + defender);
-    updateHealth(damageTaken);
+    updateHealth(-damageTaken);
     var fight = { 'dmgGiven': damageDealt, 'defender': defender.name };
     stompClient.send(`/app/pvp`, {}, JSON.stringify(fight));
 }
@@ -319,7 +318,7 @@ function handelPVP(to) {
 function receivePVPUpdate(damageUpdate) {
     console.log(damageUpdate);
     if(damageUpdate.defender == player.name) {
-        updateHealth(damageUpdate.dmgGiven);
+        updateHealth(-damageUpdate.dmgGiven);
     }
 }
 
