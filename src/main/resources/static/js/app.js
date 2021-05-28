@@ -218,6 +218,7 @@ function move(from, to) {
 }
 
 function changeZones() { //stretch
+    player.isDead = true;
     let movedUp = false;
     //unsubscribe from old subscription
     zoneSubscription.unsubscribe(`/game/zone/1`);
@@ -336,6 +337,7 @@ function getCurrentBoard(zone, moveUp = true) {
             spawnPlayer(moveUp);
             updateBoard(boardState);
             populateMobs();
+            player.isDead = false;
         }
     })
 }
