@@ -235,7 +235,9 @@ function changeZones() { //stretch
     zoneSubscription.unsubscribe(`/game/zone/1`);
 
     //change zones 
-    if (player.position.y < 2 || boardState[0].includes('X') == false) {
+    if(boardState[boardState.length-1].includes('X') && player.position.y == boardState.length-2){
+        zone--;
+    } else if (player.position.y < 2 || boardState[0].includes('X') == false) {
         movedUp = true;
         zone++;
     } else {
