@@ -70,6 +70,7 @@ div.nav-div {
     position: relative;
     font-size: 20px;
     text-align: left;
+    background-color: rgb(12, 111, 24);
 }
 
 .play-li {
