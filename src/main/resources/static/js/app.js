@@ -186,8 +186,7 @@ function handleMove(to) {
     const toChar = boardState[to.y][to.x];
     switch (toChar) {
         case '#':
-            console.log("ran into a wall");
-            break;
+            return;
         case '.':
             console.log("moving");
             move(player.position, to);
