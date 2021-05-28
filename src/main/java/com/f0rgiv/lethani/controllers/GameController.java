@@ -53,6 +53,18 @@ public class GameController {
         return updatePlayers(principal, position, 3);
     }
 
+    @MessageMapping("/gameLogic/4")
+    @SendTo("/game/zone/4")
+    public List<Player> playerResponse4(Principal principal, Player position) {
+        return updatePlayers(principal, position, 3);
+    }
+
+    @MessageMapping("/gameLogic/5")
+    @SendTo("/game/zone/5")
+    public List<Player> playerResponse5(Principal principal, Player position) {
+        return updatePlayers(principal, position, 3);
+    }
+
     @MessageMapping("/pvp")
     @SendTo("/game/pvp")
     public FightResponse fightResponse0(Principal principal, Fight fight) {
