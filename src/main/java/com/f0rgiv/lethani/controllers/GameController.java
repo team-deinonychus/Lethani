@@ -53,6 +53,13 @@ public class GameController {
         return updatePlayers(principal, position, 3);
     }
 
+    @MessageMapping("/pvp")
+    @SendTo("/game/pvp")
+    public FightResponse fightResponse0(Principal principal, Fight fight) {
+        System.out.println(fight);
+        return new FightResponse(fight);
+    }
+
     @PostMapping("/updatexp/{xp}")
     @ResponseStatus(value = HttpStatus.OK)
     public void updateXp(@PathVariable String xp, Principal principal) {
